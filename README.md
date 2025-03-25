@@ -1,4 +1,8 @@
-# My work assignment Title
+
+![UMAIA|Logo](/galeria/umaia.png)
+
+# **Desenvolvimento Web II**
+## Apresentação do projeto
 
 Repository to host the project developed for 'some class', a n^th^ year subject at SOMESCHOOL. Developed by Group ALPHA : [@MarcoOliveira](https://github.com/marcoamarooliveira), [add others].
 
@@ -51,6 +55,7 @@ _Please add at least on section (a file) per Chapter. But you can add more._
 ### Presentation
 * Chapter 4: [Presentation](doc/c4.md)
 
-## Team
-* Marco Amaro Oliveira [@MarcoOliveira](https://github.com/marcoamarooliveira)
-* Other team members
+## Elementos do Grupo
+- António Manuel Estrela Magriço de Oliveira – nº 044409 @A044409
+- António Manuel Ferreira Lopes dos Santos Filipe - nº 044351 @AmFilipe
+- João Pedro Freitas Gomes – nº045235 @joaoismai

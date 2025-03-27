@@ -28,11 +28,11 @@ const options = {
         },
         servers: [
             {
-                url: 'http://localhost:' + PORT, // Agora, PORT já está definido aqui
+                url: 'http://localhost:' + PORT, // Usa o PORT corretamente
             },
         ],
     },
-    apis: ['./routes/*.js'],
+    apis: ['./routes/*.js'], // Aponta para a pasta onde estão as rotas
 };
 
 const swaggerDocs = swaggerJsDoc(options);

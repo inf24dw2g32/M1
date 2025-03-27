@@ -10,6 +10,10 @@ const swaggerUi = require('swagger-ui-express');
 require('dotenv').config();
 
 const app = express();
+
+// Defina o PORT antes de usá-lo
+const PORT = process.env.PORT || 3000;
+
 app.use(express.json());
 app.use(passport.initialize());
 
@@ -22,7 +26,11 @@ const options = {
             version: '1.0.0',
             description: 'Documentação da API para gestão de pacientes, médicos e consultas',
         },
-        servers: [{ url: 'http://localhost:3000' }],
+        servers: [
+            {
+                url: 'http://localhost:' + PORT, // Agora, PORT já está definido aqui
+            },
+        ],
     },
     apis: ['./routes/*.js'],
 };
@@ -41,5 +49,7 @@ app.use('/pacientes', pacientesRoutes);
 app.use('/medicos', medicosRoutes);
 app.use('/consultas', consultasRoutes);
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Servidor a correr na porta ${PORT}`));
+// Iniciar o servidor
+app.listen(PORT, function () {
+    console.log(`App running on http://localhost:${PORT}`);
+});

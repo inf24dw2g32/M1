@@ -1,0 +1,45 @@
+const express = require('express');
+const passport = require('passport');
+const authRoutes = require('./routes/auth');
+const pacientesRoutes = require('./routes/pacientes');
+const medicosRoutes = require('./routes/medicos');
+const consultasRoutes = require('./routes/consultas');
+const sequelize = require('./config/db');
+const swaggerJsDoc = require('swagger-jsdoc');
+const swaggerUi = require('swagger-ui-express');
+require('dotenv').config();
+
+const app = express();
+app.use(express.json());
+app.use(passport.initialize());
+
+// Configuração do Swagger
+const options = {
+    swaggerDefinition: {
+        openapi: '3.0.0',
+        info: {
+            title: 'API de Agendamento de Consultas',
+            version: '1.0.0',
+            description: 'Documentação da API para gestão de pacientes, médicos e consultas',
+        },
+        servers: [{ url: 'http://localhost:3000' }],
+    },
+    apis: ['./routes/*.js'],
+};
+
+const swaggerDocs = swaggerJsDoc(options);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+
+// Sincronizar BD
+sequelize.sync()
+    .then(() => console.log('Base de dados sincronizada'))
+    .catch(err => console.error('Erro ao sincronizar BD:', err));
+
+// Rotas
+app.use('/auth', authRoutes);
+app.use('/pacientes', pacientesRoutes);
+app.use('/medicos', medicosRoutes);
+app.use('/consultas', consultasRoutes);
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Servidor a correr na porta ${PORT}`));

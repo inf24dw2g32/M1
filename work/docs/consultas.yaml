@@ -1,0 +1,144 @@
+tags:
+  - name: Consultas
+    description: Operações relacionadas com as consultas
+
+paths:
+  /consultas:
+    get:
+      summary: Retorna uma lista de consultas
+      tags:
+        - Consultas
+      responses:
+        200:
+          description: Lista de consultas
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      description: O ID da consulta
+                    data:
+                      type: string
+                      format: date
+                      description: A data da consulta
+                    pacienteId:
+                      type: integer
+                      description: O ID do paciente relacionado
+                    medicoId:
+                      type: integer
+                      description: O ID do médico relacionado
+        500:
+          description: Erro ao buscar consultas
+
+    post:
+      summary: Cria uma nova consulta
+      tags:
+        - Consultas
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: string
+                  format: date
+                  description: A data da consulta
+                pacienteId:
+                  type: integer
+                  description: O ID do paciente relacionado
+                medicoId:
+                  type: integer
+                  description: O ID do médico relacionado
+      responses:
+        201:
+          description: Consulta criada com sucesso
+        400:
+          description: Dados inválidos ou ausentes
+
+  /consultas/{id}:
+    get:
+      summary: Retorna uma consulta pelo ID
+      tags:
+        - Consultas
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID da consulta a ser retornada
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Consulta encontrada
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  data:
+                    type: string
+                    format: date
+                  pacienteId:
+                    type: integer
+                  medicoId:
+                    type: integer
+        404:
+          description: Consulta não encontrada
+
+    put:
+      summary: Atualiza os dados de uma consulta
+      tags:
+        - Consultas
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID da consulta a ser atualizada
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: string
+                  format: date
+                pacienteId:
+                  type: integer
+                medicoId:
+                  type: integer
+      responses:
+        200:
+          description: Consulta atualizada com sucesso
+        400:
+          description: Dados inválidos ou ausentes
+        404:
+          description: Consulta não encontrada
+
+    delete:
+      summary: Deleta uma consulta pelo ID
+      tags:
+        - Consultas
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID da consulta a ser eliminada
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Consulta removida com sucesso
+        404:
+          description: Consulta não encontrada

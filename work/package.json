@@ -18,7 +18,8 @@
     "passport-oauth2": "^1.6.1",
     "sequelize": "^6.37.6",
     "swagger-jsdoc": "^6.2.8",
-    "swagger-ui-express": "^5.0.1"
+    "swagger-ui-express": "^5.0.1",
+    "yamljs": "^0.3.0"
   },
   "devDependencies": {
     "nodemon": "^3.0.1"

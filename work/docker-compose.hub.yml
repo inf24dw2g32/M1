@@ -1,0 +1,35 @@
+services:
+  app:
+    image: seu-usuario-docker-hub/nome-da-imagem-app:tag # Substitua pelo nome da sua imagem no Docker Hub
+    ports:
+      - "3000:3000"
+    environment:
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_USER: root
+      DB_PASSWORD: 12345678
+      DB_NAME: Scheduler
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - scheduler-network
+
+  db:
+    image: seu-usuario-docker-hub/nome-da-imagem-app:tag # Substitua pelo nome da sua imagem no Docker Hub
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: 12345678
+      MYSQL_DATABASE: Scheduler
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - scheduler-network
+
+networks:
+  scheduler-network:
+    driver: bridge

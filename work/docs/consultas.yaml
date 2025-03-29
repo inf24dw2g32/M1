@@ -23,8 +23,11 @@ paths:
                       description: O ID da consulta
                     data:
                       type: string
-                      format: date
-                      description: A data da consulta
+                      format: date-time
+                      description: A data e hora da consulta
+                    descricao:
+                      type: string
+                      description: Descrição da consulta (opcional)
                     pacienteId:
                       type: integer
                       description: O ID do paciente relacionado
@@ -32,7 +35,7 @@ paths:
                       type: integer
                       description: O ID do médico relacionado
         500:
-          description: Erro ao buscar consultas
+          description: Erro interno do servidor
 
     post:
       summary: Cria uma nova consulta
@@ -44,11 +47,18 @@ paths:
           application/json:
             schema:
               type: object
+              required:
+                - data
+                - pacienteId
+                - medicoId
               properties:
                 data:
                   type: string
-                  format: date
-                  description: A data da consulta
+                  format: date-time
+                  description: A data e hora da consulta
+                descricao:
+                  type: string
+                  description: Descrição da consulta (opcional)
                 pacienteId:
                   type: integer
                   description: O ID do paciente relacionado
@@ -58,8 +68,26 @@ paths:
       responses:
         201:
           description: Consulta criada com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  data:
+                    type: string
+                    format: date-time
+                  descricao:
+                    type: string
+                  pacienteId:
+                    type: integer
+                  medicoId:
+                    type: integer
         400:
           description: Dados inválidos ou ausentes
+        500:
+          description: Erro interno do servidor
 
   /consultas/{id}:
     get:
@@ -85,13 +113,17 @@ paths:
                     type: integer
                   data:
                     type: string
-                    format: date
+                    format: date-time
+                  descricao:
+                    type: string
                   pacienteId:
                     type: integer
                   medicoId:
                     type: integer
         404:
           description: Consulta não encontrada
+        500:
+          description: Erro interno do servidor
 
     put:
       summary: Atualiza os dados de uma consulta
@@ -110,14 +142,24 @@ paths:
           application/json:
             schema:
               type: object
+              required:
+                - data
+                - pacienteId
+                - medicoId
               properties:
                 data:
                   type: string
-                  format: date
+                  format: date-time
+                  description: Nova data e hora da consulta
+                descricao:
+                  type: string
+                  description: Nova descrição da consulta (opcional)
                 pacienteId:
                   type: integer
+                  description: Novo ID do paciente
                 medicoId:
                   type: integer
+                  description: Novo ID do médico
       responses:
         200:
           description: Consulta atualizada com sucesso
@@ -125,6 +167,8 @@ paths:
           description: Dados inválidos ou ausentes
         404:
           description: Consulta não encontrada
+        500:
+          description: Erro interno do servidor
 
     delete:
       summary: Deleta uma consulta pelo ID
@@ -142,3 +186,5 @@ paths:
           description: Consulta removida com sucesso
         404:
           description: Consulta não encontrada
+        500:
+          description: Erro interno do servidor

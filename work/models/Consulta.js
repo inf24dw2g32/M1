@@ -1,6 +1,7 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db');
-const Paciente = require('./Paciente'); // Importa o modelo Paciente
+const Paciente = require('./Paciente');
+const Medico = require('./Medico'); 
 
 const Consulta = sequelize.define('Consulta', {
     data: {
@@ -12,12 +13,14 @@ const Consulta = sequelize.define('Consulta', {
         allowNull: true
     }
 }, {
-    timestamps: true, // Garante que createdAt e updatedAt sejam gerados
-    createdAt: 'criado_em', // Personaliza o nome do campo createdAt
-    updatedAt: 'atualizado_em' // Personaliza o nome do campo updatedAt
+    timestamps: true,
+    createdAt: 'criado_em',
+    updatedAt: 'atualizado_em',
+    freezeTableName: true
 });
 
-// Define a relação entre Consulta e Paciente
+// 🛠 Adicionando relacionamento com Paciente e Médico
 Consulta.belongsTo(Paciente, { foreignKey: 'pacienteId', as: 'paciente' });
+Consulta.belongsTo(Medico, { foreignKey: 'medicoId', as: 'medico' }); 
 
 module.exports = Consulta;

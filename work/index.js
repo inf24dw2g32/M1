@@ -1,5 +1,6 @@
 const express = require('express');
 const passport = require('passport');
+const session = require('express-session'); // Para gerenciar sessões
 const authRoutes = require('./routes/auth');
 const pacientesRoutes = require('./routes/pacientes');
 const medicosRoutes = require('./routes/medicos');
@@ -12,10 +13,46 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.use(express.json());
-app.use(passport.initialize());
+// Configuração do Passport Google OAuth
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
 
-// Configuração do Swagger mantida no index.js
+// Configuração do Passport (Autenticação via Google)
+passport.use(new GoogleStrategy({
+    clientID: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    callbackURL: `http://localhost:${PORT}/auth/google/callback`,
+  },
+  (accessToken, refreshToken, profile, done) => {
+    // Salvar ou atualizar informações do usuário no banco de dados (opcional)
+    const user = {
+      id: profile.id,
+      nome: profile.displayName,
+      email: profile.emails[0].value,
+      foto: profile.photos[0].value
+    };
+    return done(null, user);
+  }
+));
+
+passport.serializeUser((user, done) => {
+  done(null, user);
+});
+
+passport.deserializeUser((user, done) => {
+  done(null, user);
+});
+
+// Middleware para inicializar o Passport e a sessão
+app.use(session({
+  secret: 'secret_key', // Troque por uma chave segura
+  resave: false,
+  saveUninitialized: true
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+// Configuração do Swagger
 const swaggerDefinition = {
     openapi: '3.0.0',
     info: {
@@ -54,12 +91,12 @@ sequelize.sync()
     .catch(err => console.error('Erro ao sincronizar BD:', err));
 
 // Rotas
-app.use('/auth', authRoutes);
-app.use('/pacientes', pacientesRoutes);
-app.use('/medicos', medicosRoutes);
-app.use('/consultas', consultasRoutes);
+app.use('/auth', authRoutes); // Rota de autenticação
+app.use('/pacientes', pacientesRoutes); // Rota de pacientes
+app.use('/medicos', medicosRoutes); // Rota de médicos
+app.use('/consultas', consultasRoutes); // Rota de consultas
 
 // Iniciar o servidor
 app.listen(PORT, function () {
-    console.log(`App running on http://localhost:${PORT}`);
+    console.log(`App running on http://localhost:${PORT}/api-docs`);
 });

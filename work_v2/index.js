@@ -7,6 +7,7 @@ const { sequelize } = require('./models');
 const routes = require('./routes'); // <-- este importa automaticamente as rotas
 const swaggerUi = require('swagger-ui-express');
 const yaml = require('yamljs');
+const authRoutes = require('./routes/auth');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -106,6 +107,10 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, {
 // Middlewares
 app.use(cors());
 app.use(express.json());
+
+// Rotas de autenticação
+app.use('/auth', authRoutes); // Usa as rotas de autenticação com o prefixo '/auth'
+
 
 // 📌 Usa todas as rotas definidas em routes/index.js
 app.use('/', routes);

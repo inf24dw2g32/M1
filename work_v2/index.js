@@ -3,31 +3,42 @@ const express = require('express');
 const cors = require('cors');
 const passport = require('passport');
 const session = require('express-session');
-const { sequelize } = require('./models');
-const routes = require('./routes'); // <-- este importa automaticamente as rotas
+const { sequelize, User } = require('./models');
+const routes = require('./routes');
+const authRoutes = require('./routes/auth');
 const swaggerUi = require('swagger-ui-express');
 const yaml = require('yamljs');
-const authRoutes = require('./routes/auth');
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Configuração do Passport Google OAuth
-const GoogleStrategy = require('passport-google-oauth20').Strategy;
+
 passport.use(new GoogleStrategy({
   clientID: process.env.GOOGLE_CLIENT_ID,
   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-  callbackURL: `http://localhost:${PORT}/auth/google/callback`, // URL do Google OAuth callback
+  callbackURL: process.env.GOOGLE_CALLBACK_URL, // Certifique-se de que esta variável está definida no .env
 },
-(accessToken, refreshToken, profile, done) => {
-  const user = {
-    id: profile.id,
-    nome: profile.displayName,
-    email: profile.emails[0].value,
-    foto: profile.photos[0].value,
-    role: 'user', // ou definir baseado na BD se necessário
-  };
-  return done(null, user);
+async (accessToken, refreshToken, profile, done) => {
+  try {
+    // Lógica para verificar ou criar o usuário na base de dados
+    let user = await User.findOne({ where: { email: profile.emails[0].value } });
+
+    if (!user) {
+      user = await User.create({
+        name: profile.displayName,
+        email: profile.emails[0].value,
+        google_id: profile.id,
+        role: 'user',
+      });
+    }
+
+    return done(null, user);
+  } catch (error) {
+    console.error('Erro ao autenticar usuário:', error);
+    return done(error, null);
+  }
 }));
 
 passport.serializeUser((user, done) => {

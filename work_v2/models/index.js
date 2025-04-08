@@ -1,33 +1,10 @@
-const { DataTypes } = require('sequelize');
-const sequelize = require('../config/db');
+const sequelize = require('../config/db'); // Importa a instância do Sequelize configurada
+const initUser = require('./user'); // Importa o modelo User
 
-const User = sequelize.define('User', {
-    id: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
-        primaryKey: true,
-    },
-    name: {
-        type: DataTypes.STRING(100),
-        allowNull: false,
-    },
-    email: {
-        type: DataTypes.STRING(100),
-        unique: true,
-        allowNull: false,
-    },
-    google_id: {
-        type: DataTypes.STRING(100),
-        unique: true,
-        allowNull: false,
-    },
-    role: {
-        type: DataTypes.ENUM('user', 'admin'),
-        defaultValue: 'user',
-    },
-}, {
-    tableName: 'users',
-    timestamps: false, // Caso sua tabela não tenha colunas de timestamp (createdAt, updatedAt)
-});
+// Certifique-se de inicializar o modelo com a instância do Sequelize, se necessário
+const User = initUser(sequelize);
 
-module.exports = User;
+module.exports = {
+  sequelize, // Exporta a instância do Sequelize
+  User, // Exporta o modelo User
+};

@@ -57,7 +57,7 @@ const swaggerDefinition = {
   },
   servers: [
     {
-      url: `http://localhost:${PORT}/api`, // Adicionando prefixo para rotas API
+      url: `http://localhost:${PORT}`, // Adicionando prefixo para rotas API
       description: 'Servidor local',
     },
   ],
@@ -105,13 +105,13 @@ app.use(cors());
 app.use(express.json());
 
 // 📌 Usa todas as rotas definidas em routes/index.js
-app.use('/api', routes);
+app.use('/', routes);
 
 // Sincronizar BD e iniciar servidor
 sequelize.sync({ alter: true }).then(() => {
   console.log('Base de dados sincronizada');
   app.listen(PORT, () => {
-    console.log(`✅ API disponível em http://localhost:${PORT}/api-docs`);
-    console.log(`🔐 Login Google: http://localhost:${PORT}/auth/google`);
+    console.log(` API disponível em http://localhost:${PORT}/api-docs`);
+    console.log(` Login Google: http://localhost:${PORT}/auth/google`);
   });
 });

@@ -65,11 +65,14 @@ const swaggerDefinition = {
     securitySchemes: {
       oauth2: {
         type: 'oauth2',
-        flow: 'implicit', // Tipo de fluxo (implicit para o Google OAuth)
-        authorizationUrl: `http://localhost:${PORT}/auth/google`, // URL para autorização com Google
-        scopes: {
-          'profile': 'Acesso ao perfil do utilizador',
-          'email': 'Acesso ao email do utilizador'
+        flows: { // Corrigido de 'flow' para 'flows'
+          implicit: { // Configuração do fluxo implicit
+            authorizationUrl: `http://localhost:${PORT}/auth/google`, // URL para autorização com Google
+            scopes: {
+              'profile': 'Acesso ao perfil do utilizador',
+              'email': 'Acesso ao email do utilizador'
+            }
+          }
         }
       }
     }

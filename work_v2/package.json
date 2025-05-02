@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "npm index,js",
+    "swagger:build": "node generateSwaggerJson.js",
     "dev": "nodemon index.js",
     "docker": "docker-compose up --build",
     "docker_hub": "docker-compose -f docker-compose-hub.yml up --build"

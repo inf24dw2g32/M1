@@ -1,0 +1,635 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API de Agendamento de Consultas",
+    "version": "1.0.0",
+    "description": "Documentação da API"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000"
+    }
+  ],
+  "paths": {
+    "/users": {
+      "get": {
+        "summary": "Retorna uma lista de pacientes",
+        "tags": [
+          "Users"
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de pacientes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer",
+                        "description": "O ID do paciente"
+                      },
+                      "nome": {
+                        "type": "string",
+                        "description": "O nome do paciente"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro ao buscar pacientes"
+          }
+        }
+      },
+      "post": {
+        "summary": "Cria um novo paciente",
+        "tags": [
+          "Users"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "nome": {
+                    "type": "string",
+                    "description": "O nome do paciente"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Paciente criado com sucesso"
+          },
+          "400": {
+            "description": "Erro ao criar paciente"
+          }
+        }
+      }
+    },
+    "/users/{id}": {
+      "get": {
+        "summary": "Retorna um paciente pelo ID",
+        "tags": [
+          "Users"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "ID do paciente a ser retornado",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Paciente encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer"
+                    },
+                    "nome": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Paciente não encontrado"
+          }
+        }
+      },
+      "put": {
+        "summary": "Atualiza os dados de um paciente",
+        "tags": [
+          "Users"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "ID do paciente a ser atualizado",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "nome": {
+                    "type": "string",
+                    "description": "O nome do paciente"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Paciente atualizado com sucesso"
+          },
+          "400": {
+            "description": "Erro ao atualizar paciente"
+          },
+          "404": {
+            "description": "Paciente não encontrado"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Deleta um paciente pelo ID",
+        "tags": [
+          "Users"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "ID do paciente a ser eliminado",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Paciente removido com sucesso"
+          },
+          "404": {
+            "description": "Paciente não encontrado"
+          }
+        }
+      }
+    },
+    "/doctors": {
+      "get": {
+        "summary": "Retorna uma lista de médicos",
+        "tags": [
+          "Doctors"
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de médicos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer"
+                      },
+                      "nome": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro ao buscar médicos"
+          }
+        }
+      },
+      "post": {
+        "summary": "Cria um novo médico",
+        "tags": [
+          "Doctors"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "nome": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Médico criado com sucesso"
+          },
+          "400": {
+            "description": "Dados inválidos ou ausentes"
+          }
+        }
+      }
+    },
+    "/doctors/{id}": {
+      "get": {
+        "summary": "Retorna um médico pelo ID",
+        "tags": [
+          "Doctors"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Médico encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer"
+                    },
+                    "nome": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Médico não encontrado"
+          }
+        }
+      },
+      "put": {
+        "summary": "Atualiza os dados de um médico",
+        "tags": [
+          "Doctors"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "nome": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Médico atualizado com sucesso"
+          },
+          "400": {
+            "description": "Erro ao atualizar médico"
+          },
+          "404": {
+            "description": "Médico não encontrado"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Deleta um médico pelo ID",
+        "tags": [
+          "Doctors"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Médico removido com sucesso"
+          },
+          "404": {
+            "description": "Médico não encontrado"
+          }
+        }
+      }
+    },
+    "/appointments": {
+      "get": {
+        "summary": "Retorna uma lista de consultas",
+        "tags": [
+          "Appointments"
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de consultas",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer",
+                        "description": "O ID da consulta"
+                      },
+                      "data": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "A data e hora da consulta"
+                      },
+                      "descricao": {
+                        "type": "string",
+                        "description": "Descrição da consulta (opcional)"
+                      },
+                      "pacienteId": {
+                        "type": "integer",
+                        "description": "O ID do paciente relacionado"
+                      },
+                      "medicoId": {
+                        "type": "integer",
+                        "description": "O ID do médico relacionado"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor"
+          }
+        }
+      },
+      "post": {
+        "summary": "Cria uma nova consulta",
+        "tags": [
+          "Appointments"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "data",
+                  "pacienteId",
+                  "medicoId"
+                ],
+                "properties": {
+                  "data": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "A data e hora da consulta"
+                  },
+                  "descricao": {
+                    "type": "string",
+                    "description": "Descrição da consulta (opcional)"
+                  },
+                  "pacienteId": {
+                    "type": "integer",
+                    "description": "O ID do paciente relacionado"
+                  },
+                  "medicoId": {
+                    "type": "integer",
+                    "description": "O ID do médico relacionado"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Consulta criada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer"
+                    },
+                    "data": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "descricao": {
+                      "type": "string"
+                    },
+                    "pacienteId": {
+                      "type": "integer"
+                    },
+                    "medicoId": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Dados inválidos ou ausentes"
+          },
+          "500": {
+            "description": "Erro interno do servidor"
+          }
+        }
+      }
+    },
+    "/appointments/{id}": {
+      "get": {
+        "summary": "Retorna uma consulta pelo ID",
+        "tags": [
+          "Appointments"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "ID da consulta a ser retornada",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Consulta encontrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer"
+                    },
+                    "data": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "descricao": {
+                      "type": "string"
+                    },
+                    "pacienteId": {
+                      "type": "integer"
+                    },
+                    "medicoId": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Consulta não encontrada"
+          },
+          "500": {
+            "description": "Erro interno do servidor"
+          }
+        }
+      },
+      "put": {
+        "summary": "Atualiza os dados de uma consulta",
+        "tags": [
+          "Appointments"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "ID da consulta a ser atualizada",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "data",
+                  "pacienteId",
+                  "medicoId"
+                ],
+                "properties": {
+                  "data": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Nova data e hora da consulta"
+                  },
+                  "descricao": {
+                    "type": "string",
+                    "description": "Nova descrição da consulta (opcional)"
+                  },
+                  "pacienteId": {
+                    "type": "integer",
+                    "description": "Novo ID do paciente"
+                  },
+                  "medicoId": {
+                    "type": "integer",
+                    "description": "Novo ID do médico"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Consulta atualizada com sucesso"
+          },
+          "400": {
+            "description": "Dados inválidos ou ausentes"
+          },
+          "404": {
+            "description": "Consulta não encontrada"
+          },
+          "500": {
+            "description": "Erro interno do servidor"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Deleta uma consulta pelo ID",
+        "tags": [
+          "Appointments"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "ID da consulta a ser eliminada",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Consulta removida com sucesso"
+          },
+          "404": {
+            "description": "Consulta não encontrada"
+          },
+          "500": {
+            "description": "Erro interno do servidor"
+          }
+        }
+      }
+    }
+  }
+}

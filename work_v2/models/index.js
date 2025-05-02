@@ -1,10 +1,23 @@
-const sequelize = require('../config/db'); // Importa a instância do Sequelize configurada
-const initUser = require('./user'); // Importa o modelo User
+const { Sequelize } = require('sequelize');
+const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD, {
+  host: process.env.DB_HOST,
+  dialect: 'mysql',
+});
 
-// Certifique-se de inicializar o modelo com a instância do Sequelize, se necessário
-const User = initUser(sequelize);
+const User = require('./user')(sequelize);
+const Specialty = require('./specialty')(sequelize);
+const Doctor = require('./doctor')(sequelize);
+const Appointment = require('./appointment')(sequelize);
+
+// Relacionamentos
+Doctor.belongsTo(Specialty, { foreignKey: 'specialty_id' });
+Appointment.belongsTo(User, { foreignKey: 'user_id' });
+Appointment.belongsTo(Doctor, { foreignKey: 'doctor_id' });
 
 module.exports = {
-  sequelize, // Exporta a instância do Sequelize
-  User, // Exporta o modelo User
+  sequelize,
+  User,
+  Specialty,
+  Doctor,
+  Appointment,
 };

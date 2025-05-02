@@ -42,6 +42,29 @@ INSERT INTO users (name, email, google_id, role) VALUES
 ('Marcos Ferreira', 'marcos.ferreira@email.com', 'google_id_40', 'user'),
 ('Ana Costa', 'ana.costa@email.com', 'google_id_41', 'user');
 
+-- Inserir especialidades na tabela specialties
+INSERT INTO specialties (name) VALUES
+('Cardiologia'),
+('Ortopedia'),
+('Pediatria'),
+('Ginecologia'),
+('Dermatologia'),
+('Oftalmologia'),
+('Psiquiatria'),
+('Neurologia'),
+('Radiologia'),
+('Urologia'),
+('Endocrinologia'),
+('Geriatria'),
+('Oncologia'),
+('Reumatologia'),
+('Gastroenterologia'),
+('Infectologia'),
+('Otorrinolaringologia'),
+('Cirurgia Geral'),
+('Anestesiologia');
+
+
 -- Inserção dos médicos
 INSERT INTO doctors (name, specialty_id) VALUES
 ('Dr. João Almeida', 1),
@@ -126,24 +149,3 @@ INSERT INTO appointments (date, time, notes, user_id, doctor_id) VALUES
 ('2025-04-16', '10:30:00', 'Exame ortopédico', 1, 2),
 ('2025-04-16', '12:00:00', 'Consulta pediátrica de acompanhamento', 2, 3);
 
--- Inserir especialidades na tabela specialties
-INSERT INTO specialties (name) VALUES
-('Cardiologia'),
-('Ortopedia'),
-('Pediatria'),
-('Ginecologia'),
-('Dermatologia'),
-('Oftalmologia'),
-('Psiquiatria'),
-('Neurologia'),
-('Radiologia'),
-('Urologia'),
-('Endocrinologia'),
-('Geriatria'),
-('Oncologia'),
-('Reumatologia'),
-('Gastroenterologia'),
-('Infectologia'),
-('Otorrinolaringologia'),
-('Cirurgia Geral'),
-('Anestesiologia');

@@ -82,6 +82,8 @@ const swaggerDocument = {
   },
 };
 
+app.use(express.static(path.join(__dirname, 'public')));
+
 // Rota para Swagger
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
@@ -98,12 +100,16 @@ app.get('/auth/google/callback',
   passport.authenticate('google', { failureRedirect: '/auth/failure' }),
   (req, res) => {
     const user = req.user;
-    const token = jwt.sign({ id: user.id, email: user.email }, process.env.JWT_SECRET, {
+
+    console.log(`Utilizador logado: ${user.name}, Role: ${user.role}`);
+
+    const token = jwt.sign({ id: user.id, email: user.email, role: user.role }, process.env.JWT_SECRET, {
       expiresIn: '1h'
     });
 
     // Redirecionar para o Swagger com o token JWT no URL (mas sem o Swagger em branco)
-    res.redirect(`/api-docs?token=${token}`);
+    res.redirect(`/swagger.html?token=${token}`);
+
   });
 
 app.get('/auth/failure', (req, res) => {

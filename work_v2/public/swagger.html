@@ -2,136 +2,65 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>API Docs</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.15.5/swagger-ui.css" />
+  <title>Swagger UI</title>
+  <link rel="stylesheet" href="https://unpkg.com/swagger-ui-dist/swagger-ui.css" />
   <style>
     #auth-buttons {
-      position: absolute;
-      top: 10px;
-      right: 20px;
-      z-index: 1000;
+      margin: 15px;
     }
-    .auth-btn {
-      padding: 10px 15px;
-      margin-left: 5px;
-      background-color: #4285F4;
-      color: white;
-      border: none;
-      border-radius: 4px;
+    #auth-buttons button {
+      margin-right: 10px;
+      padding: 5px 10px;
+      font-size: 14px;
       cursor: pointer;
-    }
-    #logout-btn {
-      background-color: #db4437;
     }
   </style>
 </head>
 <body>
   <div id="auth-buttons">
-    <img id="user-avatar" src="" style="width: 32px; height: 32px; border-radius: 50%; margin-right: 10px; display: none;">
-    <div id="user-info" style="color: #333; font-weight: bold; margin-right: 10px; display: none;"></div>
-    <button id="login-btn" class="auth-btn">Login com Google</button>
-    <button id="logout-btn" class="auth-btn" style="display: none;">Logout</button>
+    <button onclick="loginWithGoogle()">🔐 Login com Google</button>
+    <button onclick="logout()">🚪 Logout</button>
   </div>
-  
+
   <div id="swagger-ui"></div>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.15.5/swagger-ui-bundle.js"></script>
+  <script src="https://unpkg.com/swagger-ui-dist/swagger-ui-bundle.js"></script>
+  <script src="https://unpkg.com/swagger-ui-dist/swagger-ui-standalone-preset.js"></script>
   <script>
-    const loadSwaggerUI = () => {
-      SwaggerUIBundle({
-        url: "/api-docs",
-        dom_id: "#swagger-ui",
-        deepLinking: true,
-        presets: [SwaggerUIBundle.presets.apis],
-        layout: "BaseLayout",
-        requestInterceptor: (req) => {
-          const token = localStorage.getItem('jwt-token');
-          if (token) {
-            req.headers["Authorization"] = "Bearer " + token;
-          }
-          return req;
-        }
-      });
-    };
+    // Captura token JWT via query e guarda localmente
+    const token = new URLSearchParams(window.location.search).get('token');
+    if (token) {
+      localStorage.setItem('jwt-token', token);
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
 
-    const loginBtn = document.getElementById('login-btn');
-    const logoutBtn = document.getElementById('logout-btn');
-
-    const updateButtons = () => {
-      const token = localStorage.getItem('jwt-token');
-      const email = localStorage.getItem('jwt-email');
-      const name = localStorage.getItem('jwt-name');
-      const photo = localStorage.getItem('jwt-photo');
-    
-      const userInfo = document.getElementById('user-info');
-      const userAvatar = document.getElementById('user-avatar');
-    
-      if (token && email && name) {
-        loginBtn.style.display = 'none';
-        logoutBtn.style.display = 'inline-block';
-        userInfo.style.display = 'inline-block';
-        userInfo.textContent = `${name} (${email})`;
-    
-        if (photo) {
-          userAvatar.src = photo;
-          userAvatar.style.display = 'inline-block';
+    // Inicializar Swagger UI com interceptor para enviar o JWT
+    const ui = SwaggerUIBundle({
+      url: "/swagger.json",
+      dom_id: '#swagger-ui',
+      presets: [
+        SwaggerUIBundle.presets.apis,
+        SwaggerUIStandalonePreset
+      ],
+      layout: "StandaloneLayout",
+      requestInterceptor: (req) => {
+        const jwt = localStorage.getItem('jwt-token');
+        if (jwt) {
+          req.headers['Authorization'] = `Bearer ${jwt}`;
         }
-      } else {
-        loginBtn.style.display = 'inline-block';
-        logoutBtn.style.display = 'none';
-        userInfo.style.display = 'none';
-        userAvatar.style.display = 'none';
-        userInfo.textContent = '';
+        return req;
       }
-    };
-    
-    
-
-    loginBtn.addEventListener('click', () => {
-      const width = 500;
-      const height = 600;
-      const left = (screen.width / 2) - (width / 2);
-      const top = (screen.height / 2) - (height / 2);
-      const loginWindow = window.open('/auth/google', 'GoogleLogin',
-        `width=${width},height=${height},top=${top},left=${left}`
-      );
-
-      window.addEventListener('message', function handleMessage(event) {
-        if (event.origin !== window.location.origin) return;
-        const token = event.data.token;
-        const email = event.data.email;
-        const name = event.data.name;
-        const photo = event.data.photo;
-        if (token) {
-          localStorage.setItem('jwt-token', token);
-          localStorage.setItem('jwt-email', email);
-          localStorage.setItem('jwt-name', name);
-          localStorage.setItem('jwt-photo', photo);
-          updateButtons();
-          alert("Login efetuado com sucesso!");
-          location.reload();
-        }
-
-        window.removeEventListener('message', handleMessage);
-      }, false);
     });
 
-    logoutBtn.addEventListener('click', () => {
+    // Funções de autenticação
+    function loginWithGoogle() {
+      window.location.href = "/auth/google";
+    }
+
+    function logout() {
       localStorage.removeItem('jwt-token');
-      localStorage.removeItem('jwt-email');
-      localStorage.removeItem('jwt-name');
-      localStorage.removeItem('jwt-photo');
-      updateButtons();
-      alert("Logout efetuado.");
-      location.reload();
-    });
-
-    updateButtons();
-    loadSwaggerUI();
+      window.location.href = "/swagger.html";
+    }
   </script>
 </body>
 </html>
-
-
-
-

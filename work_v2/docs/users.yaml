@@ -90,7 +90,7 @@ paths:
             schema:
               type: object
               properties:
-                nome:
+                name:
                   type: string
                   description: O nome do paciente
       responses:

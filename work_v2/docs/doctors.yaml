@@ -1,7 +1,3 @@
-tags:
-  - name: Doctors
-    description: Operações relacionadas a médicos
-
 paths:
   /doctors:
     get:
@@ -19,10 +15,11 @@ paths:
                   properties:
                     id:
                       type: integer
-                    nome:
+                    name:
                       type: string
         500:
           description: Erro ao buscar médicos
+
     post:
       summary: Cria um novo médico
       tags: [Doctors]
@@ -33,8 +30,15 @@ paths:
             schema:
               type: object
               properties:
-                nome:
+                name:
                   type: string
+                  description: O nome do médico
+                specialty_id:
+                  type: integer
+                  description: O ID da especialidade do médico
+              required:
+                - name
+                - specialty_id
       responses:
         201:
           description: Médico criado com sucesso
@@ -61,10 +65,11 @@ paths:
                 properties:
                   id:
                     type: integer
-                  nome:
+                  name:
                     type: string
         404:
           description: Médico não encontrado
+
     put:
       summary: Atualiza os dados de um médico
       tags: [Doctors]
@@ -81,8 +86,10 @@ paths:
             schema:
               type: object
               properties:
-                nome:
+                name:
                   type: string
+                specialty_id:
+                  type: integer
       responses:
         200:
           description: Médico atualizado com sucesso
@@ -90,6 +97,7 @@ paths:
           description: Erro ao atualizar médico
         404:
           description: Médico não encontrado
+
     delete:
       summary: Deleta um médico pelo ID
       tags: [Doctors]

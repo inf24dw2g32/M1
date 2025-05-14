@@ -1,5 +1,6 @@
 -- Atualização da tabela de Pacientes com a idade
 INSERT INTO users (name, email, google_id, role) VALUES
+
 ('António Filipe', 'umaia.dw2425@gmail.com', 'google_id_1', 'admin'),
 ('Carlos Silva', 'carlos.silva@email.com', 'google_id_2', 'user'),
 ('Maria Oliveira', 'maria.oliveira@email.com', 'google_id_3', 'user'),

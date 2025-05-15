@@ -20,5 +20,16 @@ module.exports = (sequelize) => {
     timestamps: false,
   });
 
+ 
+  // Definir o método associate
+  Specialty.associate = (models) => {
+    // Uma Especialidade tem Muitos Doutores
+    Specialty.hasMany(models.Doctor, {
+      as: 'doctors', // Alias para aceder aos médicos a partir da especialidade (usado na rota /specialties/:id)
+      foreignKey: 'specialty_id' // A coluna na tabela 'doctors' que liga a 'specialties'
+    });
+  };
+ 
+
   return Specialty;
 };

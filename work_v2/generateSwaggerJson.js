@@ -14,6 +14,7 @@ const swaggerDefinition = {
 const usersDocs = yaml.load('./docs/users.yaml');
 const doctorsDocs = yaml.load('./docs/doctors.yaml');
 const appointmentsDocs = yaml.load('./docs/appointments.yaml');
+const specialtiesDocs = yaml.load('./docs/specialties.yaml');
 
 const swaggerJson = {
   ...swaggerDefinition,
@@ -21,6 +22,7 @@ const swaggerJson = {
     ...usersDocs.paths,
     ...doctorsDocs.paths,
     ...appointmentsDocs.paths,
+    ...specialtiesDocs.paths,
   },
 };
 

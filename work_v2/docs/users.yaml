@@ -101,7 +101,7 @@ paths:
         404:
           description: Paciente não encontrado
     delete:
-      summary: Deleta um paciente pelo ID
+      summary: Elimina um paciente pelo ID
       tags:
         - Users
       parameters:

@@ -99,7 +99,7 @@ paths:
           description: Médico não encontrado
 
     delete:
-      summary: Deleta um médico pelo ID
+      summary: Elimina um médico pelo ID
       tags: [Doctors]
       parameters:
         - in: path

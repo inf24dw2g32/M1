@@ -28,12 +28,16 @@ paths:
                     descricao:
                       type: string
                       description: Descrição da consulta (opcional)
-                    pacienteId:
-                      type: integer
-                      description: O ID do paciente relacionado
-                    medicoId:
-                      type: integer
-                      description: O ID do médico relacionado
+                    specialty: 
+                      type: object
+                      description: A especialidade da consulta
+                      properties:
+                        id:
+                          type: integer
+                          description: O ID da especialidade
+                        name:
+                          type: string
+                          description: O nome da especialidade
         500:
           description: Erro interno do servidor
 
@@ -65,6 +69,9 @@ paths:
                 medicoId:
                   type: integer
                   description: O ID do médico relacionado
+                especialidadeId:
+                  type: integer
+                  description: O ID da especialidade desejada para a consulta
       responses:
         201:
           description: Consulta criada com sucesso
@@ -84,6 +91,9 @@ paths:
                     type: integer
                   medicoId:
                     type: integer
+                  especialidadeId:
+                    type: integer
+                    
         400:
           description: Dados inválidos ou ausentes
         500:
@@ -160,6 +170,9 @@ paths:
                 medicoId:
                   type: integer
                   description: Novo ID do médico
+                especialidadeId:
+                  type: integer
+                  description: Novo ID da especialidade
       responses:
         200:
           description: Consulta atualizada com sucesso
@@ -171,7 +184,7 @@ paths:
           description: Erro interno do servidor
 
     delete:
-      summary: Deleta uma consulta pelo ID
+      summary: Elimina uma consulta pelo ID
       tags:
         - Appointments
       parameters:

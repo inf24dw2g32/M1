@@ -71,6 +71,7 @@ const swaggerDefinition = {
 const usersDocs = yaml.load('./docs/users.yaml');
 const doctorsDocs = yaml.load('./docs/doctors.yaml');
 const appointmentsDocs = yaml.load('./docs/appointments.yaml');
+const specialtiesDocs = yaml.load('./docs/specialties.yaml');
 
 // Combinar os documentos YAML em um único objeto Swagger
 const swaggerDocument = {
@@ -79,6 +80,7 @@ const swaggerDocument = {
     ...usersDocs.paths,
     ...doctorsDocs.paths,
     ...appointmentsDocs.paths,
+    ...specialtiesDocs.paths,
   },
 };
 

@@ -1,7 +1,7 @@
 const { Sequelize } = require('sequelize');
 const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD, {
-  host: process.env.DB_HOST,
-  dialect: 'mysql',
+  host: process.env.DB_HOST,
+  dialect: 'mysql',
 });
 
 const User = require('./user')(sequelize);
@@ -10,14 +10,32 @@ const Doctor = require('./doctor')(sequelize);
 const Appointment = require('./appointment')(sequelize);
 
 // Relacionamentos
-Doctor.belongsTo(Specialty, { foreignKey: 'specialty_id' });
-Appointment.belongsTo(User, { foreignKey: 'user_id' });
-Appointment.belongsTo(Doctor, { foreignKey: 'doctor_id' });
+// >>> CORRIGIDO: Adicionado aliases 'as' para corresponder às rotas <<<
+
+// Um Doutor pertence a UMA Especialidade
+Doctor.belongsTo(Specialty, { as: 'specialty', foreignKey: 'specialty_id' }); // Adicionado as: 'specialty'
+
+// Um Agendamento pertence a UM Utilizador (Paciente)
+Appointment.belongsTo(User, { as: 'paciente', foreignKey: 'user_id' }); // Adicionado as: 'paciente'
+
+// Um Agendamento pertence a UM Doutor
+Appointment.belongsTo(Doctor, { as: 'medico', foreignKey: 'doctor_id' }); // Adicionado as: 'medico'
+
+// Opcional, mas recomendado: associações inversas (hasMany)
+// Uma Especialidade tem Muitos Doutores
+Specialty.hasMany(Doctor, { as: 'doctors', foreignKey: 'specialty_id' }); // Adicionado as: 'doctors'
+
+// Um Utilizador (Paciente) tem Muitos Agendamentos
+User.hasMany(Appointment, { as: 'appointments', foreignKey: 'user_id' }); // Adicionado as: 'appointments'
+
+// Um Doutor tem Muitos Agendamentos
+Doctor.hasMany(Appointment, { as: 'appointments', foreignKey: 'doctor_id' }); // Adicionado as: 'appointments'
+
 
 module.exports = {
-  sequelize,
-  User,
-  Specialty,
-  Doctor,
-  Appointment,
+ sequelize,
+ User,
+ Specialty,
+ Doctor,
+ Appointment,
 };

@@ -345,6 +345,95 @@
           }
         }
       },
+      "paths": null
+    },
+    "/doctors/{id}/appointments": {
+      "get": {
+        "summary": "Retorna todas as consultas e pacientes de um médico específico",
+        "description": "Lista todas as consultas agendadas com um médico cujo ID é especificado no caminho,\nincluindo os detalhes dos pacientes associados a cada consulta.\nEsta rota requer autenticação. A lógica de autorização (ex: apenas admin ou o próprio médico)\ndeve ser implementada no backend.\n",
+        "tags": [
+          "Doctors",
+          "Appointments"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "O ID do médico cujas consultas e pacientes devem ser retornados",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de consultas com pacientes encontrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer",
+                        "description": "O ID da consulta"
+                      },
+                      "date": {
+                        "type": "string",
+                        "format": "date",
+                        "description": "A data da consulta"
+                      },
+                      "time": {
+                        "type": "string",
+                        "format": "time",
+                        "description": "A hora da consulta"
+                      },
+                      "notes": {
+                        "type": "string",
+                        "description": "Notas ou descrição da consulta (opcional)",
+                        "nullable": true
+                      },
+                      "paciente": {
+                        "type": "object",
+                        "description": "Os detalhes do paciente (utilizador) associado a esta consulta",
+                        "properties": {
+                          "id": {
+                            "type": "integer",
+                            "description": "O ID do paciente"
+                          },
+                          "name": {
+                            "type": "string",
+                            "description": "O nome do paciente"
+                          },
+                          "email": {
+                            "type": "string",
+                            "format": "email",
+                            "description": "O email do paciente"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Não autenticado. O token de autenticação está ausente ou inválido."
+          },
+          "403": {
+            "description": "Acesso negado. O utilizador autenticado não tem permissão para aceder a estas consultas (ex: não é admin, nem o médico em questão)."
+          },
+          "404": {
+            "description": "Médico não encontrado com o ID fornecido."
+          },
+          "500": {
+            "description": "Erro interno do servidor ao processar a requisição."
+          }
+        }
+      },
       "delete": {
         "summary": "Elimina um médico pelo ID",
         "tags": [

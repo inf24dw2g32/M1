@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const auth = require('../middleware/auth'); // Assumindo que este middleware verifica autenticação e adiciona req.user
-const { Doctor, Specialty } = require('../models'); // Importa os modelos Doctor e Specialty
+const { Appointment, User, Doctor, Specialty } = require('../models'); // Importa os modelos Doctor e Specialty
 
 // Middleware de verificação de autenticação e admin (aplicado a todas as rotas abaixo)
 router.use(auth, (req, res, next) => {
@@ -116,6 +116,63 @@ router.put('/:id', async (req, res) => {
     // Pode adicionar tratamento de erro específico para specialty_id inválido
     res.status(500).json({ error: 'Erro interno do servidor ao atualizar médico.' });
   }
+});
+
+// GET /doctors/:id/appointments - Retorna todas as consultas de um médico específico e os pacientes
+// Esta rota provavelmente requer que o utilizador seja admin ou talvez o próprio médico logado
+// (a lógica de autorização específica pode variar dependendo dos seus requisitos)
+router.get('/:id/appointments', async (req, res) => {
+    const doctorId = req.params.id; // Pega o ID do médico dos parâmetros do URL
+
+    try {
+        // Opcional: Verificar se o médico com este ID existe antes de buscar as consultas
+        const doctor = await Doctor.findByPk(doctorId);
+        if (!doctor) {
+            return res.status(404).json({ error: 'Médico não encontrado.' });
+        }
+
+        // Buscar todas as consultas para este médico (filtrando por doctor_id)
+        // E incluir os dados do Utilizador (Paciente) associado a cada consulta
+        const appointments = await Appointment.findAll({
+            where: { doctor_id: doctorId }, // Filtra as consultas pelo ID do médico
+            attributes: ['id', 'date', 'time', 'notes'], // Seleciona os campos da consulta
+            include: [
+                {
+                    model: User,
+                    as: 'paciente', // <<-- Usa o alias definido em Appointment.belongsTo(User)
+                    attributes: ['id', 'name', 'email'] // Inclui os campos do paciente que quer mostrar
+                    // Pode adicionar mais atributos se necessário, mas evite dados sensíveis
+                }
+                // Não precisamos incluir o Doctor aqui, pois já estamos a filtrar por ele
+            ],
+            order: [['date', 'ASC'], ['time', 'ASC']] // Opcional: Ordenar por data e hora
+        });
+
+        // A resposta será uma lista de objetos de consulta, cada um contendo um objeto 'paciente' aninhado.
+        // Exemplo de estrutura:
+        /*
+        [
+          {
+            "id": 1,
+            "date": "2023-10-27",
+            "time": "10:00:00",
+            "notes": "Consulta de rotina",
+            "paciente": {
+              "id": 10,
+              "name": "Nome do Paciente",
+              "email": "paciente@example.com"
+            }
+          },
+          // ... outras consultas deste médico
+        ]
+        */
+
+        res.json(appointments); // Envia a lista de consultas com pacientes
+
+    } catch (error) {
+        console.error(`Erro ao buscar consultas para o médico com ID ${doctorId}:`, error);
+        res.status(500).json({ error: 'Erro interno do servidor ao buscar consultas do médico.' });
+    }
 });
 
 // DELETE /doctors/:id - Deleta um médico pelo ID (Requer admin)

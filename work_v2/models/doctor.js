@@ -31,6 +31,15 @@ module.exports = (sequelize) => {
       as: 'specialty', // Alias para aceder à especialidade a partir do médico
       foreignKey: 'specialty_id' // A coluna na tabela 'doctors' que liga a 'specialties'
     });
+    // Um Doutor pode ter muitos Pacientes (associação N:M)
+    Doctor.hasMany(models.User, {
+      as: 'user',
+      foreignKey: 'doctor_id' // Chave estrangeira na tabela 'users'
+    });
+    Doctor.hasMany(models.Appointment, {
+    as: 'appointments', // Alias para os agendamentos de um doutor
+    foreignKey: 'doctor_id' // Chave estrangeira na tabela 'appointments'
+  });
   };
  
 

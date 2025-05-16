@@ -100,6 +100,8 @@ paths:
           description: Erro ao atualizar paciente
         404:
           description: Paciente não encontrado
+    
+    
     delete:
       summary: Elimina um paciente pelo ID
       tags:

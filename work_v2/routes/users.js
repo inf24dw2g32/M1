@@ -129,6 +129,7 @@ router.put('/:id', async (req, res) => {
   }
 });
 
+
 // DELETE /users/:id - Deleta um utilizador pelo ID
 router.delete('/:id', async (req, res) => {
   const userId = req.params.id; // Pega o ID dos parâmetros do URL

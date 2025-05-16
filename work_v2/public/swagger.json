@@ -345,6 +345,30 @@
           }
         }
       },
+      "delete": {
+        "summary": "Elimina um médico pelo ID",
+        "tags": [
+          "Doctors"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Médico removido com sucesso"
+          },
+          "404": {
+            "description": "Médico não encontrado"
+          }
+        }
+      },
       "paths": null
     },
     "/doctors/{id}/appointments": {
@@ -431,30 +455,6 @@
           },
           "500": {
             "description": "Erro interno do servidor ao processar a requisição."
-          }
-        }
-      },
-      "delete": {
-        "summary": "Elimina um médico pelo ID",
-        "tags": [
-          "Doctors"
-        ],
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "schema": {
-              "type": "integer"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Médico removido com sucesso"
-          },
-          "404": {
-            "description": "Médico não encontrado"
           }
         }
       }

@@ -17,9 +17,15 @@ router.use(auth, (req, res, next) => {
 // Esta rota já existia, removemos apenas o 'auth' inline pois é gerido pelo router.use
 router.get('/', async (req, res) => {
   try {
-    const doctors = await Doctor.findAll({
-      include: Specialty // Inclui os dados da especialidade associada
-      // Pode adicionar 'attributes' aqui se quiser limitar os campos retornados para cada médico na lista
+ const doctors = await Doctor.findAll({
+ // >>> CORREÇÃO: Use um array no include, especificando o modelo e o alias 'as' <<<
+include: [{
+ model: Specialty, // <-- O Modelo que quer incluir
+ as: 'specialty', // <-- O ALIAS definido na associação Doctor.belongsTo(Specialty, { as: 'specialty', ... })
+ attributes: ['id', 'name'] // <-- Selecione os campos da especialidade que quer incluir
+ }],
+ // Opcional: Limite os campos retornados para o próprio médico
+ attributes: ['id', 'name'],
     });
     res.json(doctors);
   } catch (error) {
@@ -39,11 +45,22 @@ router.post('/', async (req, res) => {
   }
 
   try {
+    const specialty = await Specialty.findByPk(specialty_id);
+     if (!specialty) {
+         return res.status(400).json({ error: 'ID de especialidade inválido.' });
+     }
     // Cria o novo médico no banco de dados
     const newDoctor = await Doctor.create({ name, specialty_id });
 
     // Opcional: buscar o médico criado com a especialidade para retornar na resposta
-    const doctorWithSpecialty = await Doctor.findByPk(newDoctor.id, { include: Specialty });
+    const doctorWithSpecialty = await Doctor.findByPk(newDoctor.id, {
+        attributes: ['id', 'name'], // Seleciona os campos do Doutor para retornar
+ include: [{
+ model: Specialty, // <-- O Modelo que quer incluir
+ as: 'specialty', // <<< Use o ALIAS definido na associação Doctor.belongsTo(Specialty, { as: 'specialty', ... })
+ attributes: ['id', 'name'] // <<< Selecione os campos da especialidade que quer incluir
+}]
+    });
 
     res.status(201).json(doctorWithSpecialty); // 201 Created
 

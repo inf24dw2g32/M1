@@ -31,6 +31,9 @@ User.hasMany(Appointment, { as: 'appointments', foreignKey: 'user_id' }); // Adi
 // Um Doutor tem Muitos Agendamentos
 Doctor.hasMany(Appointment, { as: 'appointments', foreignKey: 'doctor_id' }); // Adicionado as: 'appointments'
 
+// Um Doutor pode ter muitos Pacientes (associação N:M)
+Doctor.hasMany(User, { as: 'user', foreignKey: 'doctor_id' }); 
+
 
 module.exports = {
  sequelize,

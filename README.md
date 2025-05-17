@@ -61,9 +61,9 @@ _Please add at least on section (a file) per Chapter. But you can add more._
 
 ## Link's dos repositórios do Docker Hub
 
-- **mysql** - docker pull inf24dw1g32/mysql:2.0
-- **nodejs** - docker pull inf24dw1g32/node:2.0
-- **react** - docker pull inf24dw1g32/react:1.0
+- **mysql** - docker pull inf24dw1g32/xxx
+- **nodejs** - docker pull inf24dw1g32/xxx
+
 
 
 ## Elementos do Grupo

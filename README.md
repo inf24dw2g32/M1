@@ -4,10 +4,10 @@
 # **Desenvolvimento Web II**
 ## Apresentação do projeto
 
-Nome do Projeto: Comece pelo nome oficial ou escolhido para o seu projeto.
-Objetivo Principal: Desenvolvimento de uma plataforma para agendamento online de consultas médicas
-Contexto: Trabalho desenvolvido no âmbito da disciplina de "Desenvolvimento Web II".
-Desenvolvido pelo Grupo 32: [@António Oliveira](https://github.com/@A044409), [@Antóno Filipe](https://github.com/AmFilipe) e [@João Gomes](https://github.com/joaoismai).
+- Nome do Projeto: Comece pelo nome oficial ou escolhido para o seu projeto.
+- Objetivo Principal: Desenvolvimento de uma plataforma para agendamento online de consultas médicas
+- Contexto: Trabalho desenvolvido no âmbito da disciplina de "Desenvolvimento Web II".
+- Desenvolvido pelo Grupo 32: [@António Oliveira](https://github.com/@A044409), [@Antóno Filipe](https://github.com/AmFilipe) e [@João Gomes](https://github.com/joaoismai).
 
 ## Short theme description
 

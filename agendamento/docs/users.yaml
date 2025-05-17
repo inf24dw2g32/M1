@@ -1,0 +1,204 @@
+tags:
+  - name: Users
+    description: Operações relacionadas com pacientes
+
+paths:
+  /users:
+    get:
+      summary: Retorna uma lista de pacientes
+      tags:
+        - Users
+      responses:
+        200:
+          description: Lista de pacientes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      description: O ID do paciente
+                    nome:
+                      type: string
+                      description: O nome do paciente
+        500:
+          description: Erro ao buscar pacientes
+    post:
+      summary: Cria um novo paciente
+      tags:
+        - Users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nome:
+                  type: string
+                  description: O nome do paciente
+      responses:
+        201:
+          description: Paciente criado com sucesso
+        400:
+          description: Erro ao criar paciente
+
+  /users/{id}:
+    get:
+      summary: Retorna um paciente pelo ID
+      tags:
+        - Users
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID do paciente a ser retornado
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Paciente encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  nome:
+                    type: string
+        404:
+          description: Paciente não encontrado
+    put:
+      summary: Atualiza os dados de um paciente
+      tags:
+        - Users
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID do paciente a ser atualizado
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: O nome do paciente
+      responses:
+        200:
+          description: Paciente atualizado com sucesso
+        400:
+          description: Erro ao atualizar paciente
+        404:
+          description: Paciente não encontrado
+    
+    
+    delete:
+      summary: Elimina um paciente pelo ID
+      tags:
+        - Users
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID do paciente a ser eliminado
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Paciente removido com sucesso
+        404:
+          description: Paciente não encontrado
+
+  /users/{userId}/specialties/{specialtyId}/appointments:
+    get:
+      summary: Retorna consultas de um utilizador com médicos de uma especialidade específica
+      description: |
+        Lista todas as consultas agendadas para um utilizador cujo ID é especificado no caminho,
+        com médicos que pertencem à especialidade cujo ID também é especificado.
+        Acessível apenas ao utilizador especificado (se autenticado) ou a um administrador.
+      tags:
+        - Users
+
+      security:
+        - bearerAuth: [] # Requer autenticação
+
+      parameters:
+        - in: path
+          name: userId # Primeiro parâmetro de caminho
+          required: true
+          description: O ID do utilizador (paciente) cujas consultas devem ser retornadas
+          schema:
+            type: integer # Assumimos ID inteiro
+
+        - in: path
+          name: specialtyId # Segundo parâmetro de caminho
+          required: true
+          description: O ID da especialidade para filtrar os médicos associados às consultas
+          schema:
+            type: integer # Assumimos ID inteiro
+      responses:
+        200:
+          description: Lista de consultas encontrada para o utilizador e especialidade
+          content:
+            application/json:
+              schema:
+                type: array # A resposta é um array
+                items: # Define o esquema para um item (uma consulta com médico e especialidade)
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      description: O ID da consulta
+                    date:
+                      type: string
+                      format: date # YYYY-MM-DD
+                      description: A data da consulta
+                    time:
+                      type: string
+                      format: time # HH:MM:SS ou similar
+                      description: A hora da consulta
+                    notes:
+                      type: string
+                      description: Notas da consulta (opcional)
+                      nullable: true # Indica que pode ser nulo
+                    # Inclui o médico aninhado, conforme o alias 'medico'
+                    medico:
+                      type: object
+                      description: Os detalhes do médico associado à consulta
+                      properties:
+                        id:
+                          type: integer
+                          description: O ID do médico
+                        name:
+                          type: string
+                          description: O nome do médico
+                        # Inclui a especialidade do médico aninhada, conforme o alias 'specialty'
+                        specialty:
+                          type: object
+                          description: A especialidade do médico
+                          properties:
+                            id:
+                              type: integer
+                              description: O ID da especialidade
+                            name:
+                              type: string
+                              description: O nome da especialidade
+
+        401:
+          description: Não autenticado. O token de autenticação está ausente ou inválido.
+
+        403:
+          description: Acesso negado. O utilizador autenticado não tem permissão para aceder a estas consultas (não é o utilizador na URL nem admin).
+
+        500:
+          description: Erro interno do servidor ao processar a requisição.

@@ -5,8 +5,8 @@
 ## Apresentação do projeto
 
 Nome do Projeto: Comece pelo nome oficial ou escolhido para o seu projeto.
-Objetivo Principal: Qual é a finalidade do seu projeto? O que ele faz? (Ex: "Desenvolvimento de uma plataforma para agendamento online de consultas médicas", "Criação de um sistema de gestão de tarefas para equipas", etc.)
-Contexto: Mencione que foi desenvolvido no âmbito da disciplina de "Desenvolvimento Web II" na "UMAIA".
+Objetivo Principal: Desenvolvimento de uma plataforma para agendamento online de consultas médicas
+Contexto: Trabalho desenvolvido no âmbito da disciplina de "Desenvolvimento Web II".
 Desenvolvido pelo Grupo 32: [@António Oliveira](https://github.com/@A044409), [@Antóno Filipe](https://github.com/AmFilipe) e [@João Gomes](https://github.com/joaoismai).
 
 ## Short theme description
@@ -16,8 +16,8 @@ An example report using markdown on Github. This documentation is writen using [
 ## Organização do repositório
 
 O repositório está organizado da seguinte forma:
-- **pasta Docs** - Contém relatório entregue no inicio do trabalho, onde consta o tema do trabalho
-- **pasta Hotel_management** - Contém ficheiros LoopBack, Base Dados, React-Admin, respectivos dockerfile, docker-compose
+- **pasta Docs** - xxx
+- **pasta Agenda** - Contém ficheiros xxxx, Base Dados, respectivos dockerfile, docker-compose
 - **pasta PostmanCollection**: Arquivo com a Collection do Postman para testar os endpoints da API.
 
 ## Gallery
@@ -33,19 +33,17 @@ _Indicate the technologies you have used in this assignment. Please provide link
 * [Javascript](https://developer.mozilla.org/en-US/docs/Learn/JavaScript)
 * [PHP](https://www.php.net/)
 * [nodeJS](https://nodejs.org/en/)
-* _Any other?_
+* MySQL: Para a base de dados relacional.
 
 ### Frameworks and Libraries
 
-_Did you use any aditional libraries? Describe them here._
 * Docker
-* Multipass
 * NodeJS
-* JQuery
-* Laravel
-* Bootstrap
 * ReactJS
+* Express.js
+* Sequelize
 
+  
 ## Report
 _Please add at least on section (a file) per Chapter. But you can add more._
 

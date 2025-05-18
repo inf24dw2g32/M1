@@ -172,12 +172,55 @@ router.get('/:userId/specialties/:specialtyId/appointments', async (req, res) =>
 
             include: [
                 {
-                    model: Doctor, // Incluímos o Médico associado a cada consulta
-                    as: 'medico', // <<-- Usa o alias definido em Appointment.belongsTo(Doctor, { as: 'medico', ... })
-                    attributes: ['id', 'name'], // Campos do Médico a incluir
-                    required: true, // Garante que só trazemos consultas que têm um Médico associado
+                    model: Doctor, 
+                    as: 'medico', 
+                    attributes: ['id', 'name'], 
+                    required: true, 
+                    include: [
+                        {
+                            model: Specialty, // Incluímos a Especialidade através do Médico
+                            as: 'specialty', // <<-- Usa o alias definido em Doctor.belongsTo(Specialty, { as: 'specialty', ... })
+                      //      where: { id: specialtyId }, // <<< ESTA CLÁUSULA WHERE FILTRA AS CONSULTAS PELA ESPECIALIDADE DO MÉDICO >>>
+                            attributes: ['id', 'name'], // Campos da Especialidade a incluir
+                        
+                        }
+                    ]
+                    
+                }
+            ],
+            attributes: ['id', 'date', 'time', 'notes'],
 
-                    // Incluímos a Especialidade associada ao Médico
+            order: [['date', 'ASC'], ['time', 'ASC']] // Opcional: Ordenar os resultados
+        });
+
+
+        res.json(appointments); // Envia a lista de consultas filtradas
+
+    } catch (error) {
+        console.error(`Erro ao buscar consultas para o utilizador ${userId} na especialidade ${specialtyId}:`, error);
+        res.status(500).json({ error: 'Erro interno do servidor ao buscar consultas para o utilizador e especialidade especificados.' });
+    }
+});
+
+router.get('/:userId/doctors', async (req, res) => {
+    // Captura o ID do utilizador dos parâmetros da URL
+    const userId = req.params.userId;
+
+    try {
+        if (req.user.id !== parseInt(userId, 10) && req.user.role !== 'admin') {
+            return res.status(403).json({ error: 'Acesso negado. Não tem permissão para ver os médicos associados a este utilizador.' });
+        }
+
+
+        const appointments = await Appointment.findAll({
+            where: { user_id: userId },
+            attributes: [], 
+            include: [
+                {
+                    model: Doctor, 
+                    as: 'medico', 
+                    attributes: ['id', 'name'], 
+                    required: true, 
                     include: [
                         {
                             model: Specialty, // Incluímos a Especialidade através do Médico
@@ -189,44 +232,69 @@ router.get('/:userId/specialties/:specialtyId/appointments', async (req, res) =>
                     ]
                 }
             ],
-            attributes: ['id', 'date', 'time', 'notes'],
-
-            order: [['date', 'ASC'], ['time', 'ASC']] // Opcional: Ordenar os resultados
         });
 
-        // A resposta será uma lista de objetos de consulta.
-        // Cada objeto de consulta terá os campos base da consulta (id, date, time, notes)
-        // e um objeto aninhado para o 'medico'.
-        // Dentro do objeto 'medico', haverá um objeto aninhado para a 'specialty'.
+        const doctors = appointments
+            .map(appointment => appointment.medico) // Extrai o objeto 'medico' de cada consulta
+            .filter((medico, index, self) => // Filtra para obter médicos únicos
+                index === self.findIndex((m) => (
+                    m.id === medico.id // Compara pelo ID do médico
+                ))
+            );
 
-        // Exemplo de estrutura da resposta:
-        /*
-        [
-          {
-            "id": 1,
-            "date": "2023-11-15",
-            "time": "14:00:00",
-            "notes": "Acompanhamento",
-            "medico": {
-              "id": 5, // O ID do médico
-              "name": "Dr. Silva", // O nome do médico
-              "specialty": {
-                "id": 10, // O specialtyId que passamos na URL
-                "name": "Pediatria" // O nome da especialidade
-              }
-            }
-          },
-          // ... outras consultas deste utilizador com médicos desta especialidade
-        ]
-        */
-
-        res.json(appointments); // Envia a lista de consultas filtradas
+        res.json(doctors); // Envia a lista de médicos únicos
 
     } catch (error) {
-        console.error(`Erro ao buscar consultas para o utilizador ${userId} na especialidade ${specialtyId}:`, error);
-        res.status(500).json({ error: 'Erro interno do servidor ao buscar consultas para o utilizador e especialidade especificados.' });
+        console.error(`Erro ao buscar médicos para o utilizador com ID ${userId}:`, error);
+        res.status(500).json({ error: 'Erro interno do servidor ao buscar médicos do utilizador.' });
     }
 });
 
+router.get('/:userId/appointments', async (req, res) => {
+    // Captura o ID do utilizador dos parâmetros da URL
+    const userId = req.params.userId;
+
+    try {
+        if (req.user.id !== parseInt(userId, 10) && req.user.role !== 'admin') {
+            return res.status(403).json({ error: 'Acesso negado. Não tem permissão para ver estas consultas.' });
+        }
+        const appointments = await Appointment.findAll({
+            where: { user_id: userId }, // Filtra as consultas estritamente pelo ID do utilizador
+            attributes: ['id', 'date', 'time', 'notes'], // Seleciona os campos da consulta
+
+            // Inclui as associações necessárias para obter detalhes completos
+            include: [
+                {
+                    model: User, // Inclui o Utilizador (Paciente) associado a cada consulta
+                    as: 'paciente', // <<-- Usa o alias definido em Appointment.belongsTo(User, { as: 'paciente', ... })
+                    attributes: ['id', 'name', 'email'] // Inclui os campos do paciente que quer mostrar
+                    // Opcional: required: true se a consulta DEVE ter um paciente
+                },
+                {
+                    model: Doctor, // Inclui o Doutor associado a cada consulta
+                    as: 'medico', // <<-- Usa o alias definido em Appointment.belongsTo(Doctor, { as: 'medico', ... })
+                    attributes: ['id', 'name'], // Inclui os campos do médico que quer mostrar
+                    // Opcional: required: true se a consulta DEVE ter um médico
+                    include: [ // >>> Inclui a Especialidade DENTRO do Doutor <<<
+                        {
+                            model: Specialty, // O modelo Specialty
+                            as: 'specialty', // <<-- Usa o alias definido em Doctor.belongsTo(Specialty, { as: 'specialty', ... })
+                            attributes: ['id', 'name'] // Inclui os campos da especialidade
+                            // Opcional: required: true se o médico DEVE ter uma especialidade
+                        }
+                    ]
+                }
+            ],
+            order: [['date', 'ASC'], ['time', 'ASC']] // Opcional: Ordenar os resultados
+        });
+
+
+        res.json(appointments); // Envia a lista de consultas
+
+    } catch (error) {
+        console.error(`Erro ao buscar consultas para o utilizador com ID ${userId}:`, error);
+        res.status(500).json({ error: 'Erro interno do servidor ao buscar consultas do utilizador.' });
+    }
+});
 
 module.exports = router;

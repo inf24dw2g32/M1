@@ -1,20 +1,22 @@
-# Usar a imagem oficial do Node.js
+# Dockerfile
 FROM node:18
 
-# Definir o diretório de trabalho no contêiner
 WORKDIR /app
 
-# Copiar os arquivos package.json e package-lock.json
 COPY package*.json ./
 
-# Instalar as dependências
 RUN npm install
 
-# Copiar o restante do código da aplicação
+# Instalar o netcat (nc)
+RUN apt-get update && apt-get install -y netcat-traditional
+
+
 COPY . .
 
-# Expor a porta da aplicação
+RUN chmod +x ./wait-for-db.sh
+
 EXPOSE 3000
 
-# Comando para iniciar a aplicação
-CMD ["npm", "run", "dev"]
+CMD ["sh", "./wait-for-db.sh", "npm", "run", "dev"]
+
+

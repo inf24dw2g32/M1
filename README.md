@@ -79,8 +79,36 @@ A API disponibiliza os seguintes recursos principais:
 - Um **médico** pertence a uma **especialidade**
 - Um **médico** pode ter várias marcações (e cada marcação tem 1 médico)
 
-### Product
-* Chapter 3: [Product](doc/c3.md)
+### Produto
+## Capítulo 3:
+* 🛠 Arquitetura da Aplicação
+
+A aplicação segue uma arquitetura RESTful organizada em camadas. A estrutura principal é:
+
+- **Node.js + Express** como servidor
+- **MySQL** como base de dados relacional
+- **Sequelize** como ORM
+- **Docker** para orquestração com `docker-compose`
+- **OAuth 2.0 + JWT** para autenticação e autorização
+
+---
+
+* ⚙️ Funcionalidades
+
+- Criar, listar, atualizar e apagar marcações de consultas (Appointments)
+- Consultar especialidades médicas
+- Consultar e gerir médicos
+- Gestão de utilizadores autenticados
+
+---
+
+* 🔐 Autenticação
+
+- Login via Google (OAuth 2.0)
+- Geração de token JWT
+- Proteção dos endpoints com middleware de verificação
+- O utilizador autenticado só consegue aceder às suas próprias marcações
+
 ### Presentation
 * Chapter 4: [Presentation](doc/c4.md)
 ---

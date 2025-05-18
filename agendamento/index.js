@@ -125,7 +125,8 @@ app.use('/', routes);
 sequelize.sync({ alter: true }).then(() => {
   console.log('Base de dados sincronizada');
   app.listen(PORT, () => {
-    console.log(`✅ API disponível em http://localhost:3000/swagger.html ou http://localhost:${PORT}/api-docs`);
+    console.log(`✅ API disponível em http://localhost:3000/swagger.html`);
+    console.log(`📚 Documentação Swagger disponível em http://localhost:${PORT}/api-docs`);
     console.log(`🔐 Login Google: http://localhost:${PORT}/login`);
   });
 });

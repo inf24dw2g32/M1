@@ -60,7 +60,7 @@ O sistema é baseado numa arquitetura RESTful, com uma base de dados relacional 
 O projeto foi desenvolvido no âmbito da disciplina de Desenvolvimento Web II, por alunos do Grupo 32.
 
 ### Recursos
-## Capítulo 2: Recursos
+## Capítulo 2:
 * 📌 Recursos REST implementados
 
 A API disponibiliza os seguintes recursos principais:

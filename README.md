@@ -9,7 +9,7 @@
 - Contexto: Trabalho desenvolvido no âmbito da disciplina de "Desenvolvimento Web II".
 - Desenvolvido pelo Grupo 32: [@António Oliveira](https://github.com/@A044409), [@Antóno Filipe](https://github.com/AmFilipe) e [@João Gomes](https://github.com/joaoismai).
 
-## Short theme description
+## Descrição Resumida do Tema
 
 Este projeto consiste no desenvolvimento de uma API REST para uma plataforma de marcação de consultas médicas online. A aplicação permite a gestão de utilizadores, médicos, especialidades e marcações, com suporte a autenticação via OAuth 2.0 (Google Login) e autorização baseada em tokens JWT.
 

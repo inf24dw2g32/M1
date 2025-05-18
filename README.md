@@ -11,7 +11,7 @@
 
 ## Short theme description
 
-An example report using markdown on Github. This documentation is writen using [Markdown](https://www.markdownguide.org/). Here is a [link to the basic syntax](https://www.markdownguide.org/basic-syntax), but an [extended syntax](https://www.markdownguide.org/extended-syntax/) is also available. If you're starting with Markdown, you may want to try a [Markdown Tutorial](https://www.markdowntutorial.com/) and read the [getting started](https://www.markdownguide.org/getting-started/) section.
+Este projeto consiste no desenvolvimento de uma API REST para uma plataforma de marcação de consultas médicas online. A aplicação permite a gestão de utilizadores, médicos, especialidades e marcações, com suporte a autenticação via OAuth 2.0 (Google Login) e autorização baseada em tokens JWT.
 
 ## Organização do repositório
 

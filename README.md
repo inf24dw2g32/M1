@@ -53,8 +53,12 @@ A [table](https://www.markdownguide.org/extended-syntax/#tables) may be usefull 
 ## Report
 _Please add at least on section (a file) per Chapter. But you can add more._
 
-### Project presentation
-* Chapter 1: [Project presentation](doc/c1.md)
+### Apresentação do Projeto
+* Capítulo 1:
+Este projeto tem como objetivo desenvolver uma plataforma web para marcação de consultas médicas. A aplicação permite que os utilizadores possam criar e gerir os seus próprios agendamentos, com autenticação segura via OAuth 2.0.  
+O sistema é baseado numa arquitetura RESTful, com uma base de dados relacional (MySQL) e protegido contra acessos não autorizados.  
+O projeto foi desenvolvido no âmbito da disciplina de Desenvolvimento Web II, por alunos do Grupo 32.
+
 ### Resources
 * Chapter 2: [Resources](doc/c2.md)
 ### Product

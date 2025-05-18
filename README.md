@@ -27,13 +27,14 @@ A [table](https://www.markdownguide.org/extended-syntax/#tables) may be usefull 
 
 ## Technologies
 
-_Indicate the technologies you have used in this assignment. Please provide links for the user to read more about those technologies._
-* [XML](https://www.w3.org/XML/)
-* [HTML5](https://html.spec.whatwg.org/multipage/) + [CSS3](https://www.w3.org/Style/CSS/)
-* [Javascript](https://developer.mozilla.org/en-US/docs/Learn/JavaScript)
-* [PHP](https://www.php.net/)
-* [nodeJS](https://nodejs.org/en/)
-* MySQL: Para a base de dados relacional.
+- [Node.js](https://nodejs.org/)
+- [Express.js](https://expressjs.com/)
+- [MySQL](https://www.mysql.com/)
+- [Sequelize](https://sequelize.org/)
+- [OAuth 2.0](https://oauth.net/2/)
+- [Docker & Docker Compose](https://www.docker.com/)
+- [Postman](https://www.postman.com/)
+- [OpenAPI 3.0](https://swagger.io/specification/)
 
 ### Frameworks and Libraries
 

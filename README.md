@@ -60,15 +60,35 @@ O sistema é baseado numa arquitetura RESTful, com uma base de dados relacional 
 O projeto foi desenvolvido no âmbito da disciplina de Desenvolvimento Web II, por alunos do Grupo 32.
 
 ### Resources
-* Chapter 2: [Resources](doc/c2.md)
+## Capítulo 2: Recursos
+
+# 📌 Recursos REST implementados
+
+A API disponibiliza os seguintes recursos principais:
+
+1. **Users** (`/users`)  
+   Permite criar e consultar utilizadores registados.
+
+2. **Doctors** (`/doctors`)  
+   Permite listar médicos disponíveis e as suas especialidades.
+
+3. **Appointments** (`/appointments`)  
+   Permite criar, listar, atualizar e apagar marcações de consultas.
+
+4. **Specialties** (`/specialties`)  
+   Permite listar as especialidades médicas.
+---
+## 🔗 Relações entre Recursos
+
+- Um **utilizador** pode ter várias **marcações de consultas** → relação **1:N**
+- Um **médico** pertence a uma **especialidade**
+- Um **médico** pode ter várias marcações (e cada marcação tem 1 médico)
+
 ### Product
 * Chapter 3: [Product](doc/c3.md)
 ### Presentation
 * Chapter 4: [Presentation](doc/c4.md)
-
-
 ---
-
 ## Link's dos repositórios do Docker Hub
 
 - **mysql** - docker pull inf24dw1g32/xxx

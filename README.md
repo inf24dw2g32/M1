@@ -20,6 +20,11 @@ O repositório está organizado da seguinte forma:
 - **pasta Agenda** - Contém ficheiros xxxx, Base Dados, respectivos dockerfile, docker-compose
 - **pasta PostmanCollection**: Arquivo com a Collection do Postman para testar os endpoints da API.
 
+
+## Testes com Postman
+
+Na pasta `/postmanCollection` encontra-se a **coleção `.json`** com todos os endpoints da API prontos a serem testados via Postman.
+
 ## Gallery
 
 _Please provide a galery of the final result, with small images_

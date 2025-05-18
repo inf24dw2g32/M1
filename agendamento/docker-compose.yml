@@ -19,14 +19,21 @@ services:
       - scheduler-network
 
   db:
-    build:
-      context: ./sql
-      dockerfile: Dockerfile.sql
+    #build:
+    # context: ./sql
+    #  dockerfile: Dockerfile.sql
+    image: mysql:8.0
+
     ports:
       - "3307:3306"
     environment:
       MYSQL_ROOT_PASSWORD: 12345678
       MYSQL_DATABASE: Scheduler
+    volumes:
+      - ./sql/init.sql:/docker-entrypoint-initdb.d/01-init.sql # Monta init.sql
+      - ./sql/schema.sql:/docker-entrypoint-initdb.d/02-schema.sql # Monta schema.sql
+      # Opcional: volume para persistir dados da base de dados
+      # - db_data:/var/lib/mysql
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       interval: 10s

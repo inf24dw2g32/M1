@@ -8,8 +8,6 @@ paths:
       summary: Retorna uma lista de todas as especialidades
       description: Acessível a qualquer utilizador autenticado.
       tags: [Specialties]
-      security:
-        - bearerAuth: [] # Indica que esta rota requer autenticação (se tiver securitySchemes configurado no seu swagger.json principal)
       responses:
         200:
           description: Lista de especialidades retornada com sucesso

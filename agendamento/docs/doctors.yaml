@@ -23,6 +23,8 @@ paths:
     post:
       summary: Cria um novo médico
       tags: [Doctors]
+      security:
+        - bearerAuth: [] # Requer autenticação
       requestBody:
         required: true
         content:
@@ -49,6 +51,8 @@ paths:
     get:
       summary: Retorna um médico pelo ID
       tags: [Doctors]
+      security:
+        - bearerAuth: [] # Requer autenticação
       parameters:
         - in: path
           name: id
@@ -73,6 +77,8 @@ paths:
     put:
       summary: Atualiza os dados de um médico
       tags: [Doctors]
+      security:
+        - bearerAuth: [] # Requer autenticação
       parameters:
         - in: path
           name: id
@@ -101,6 +107,8 @@ paths:
     delete:
       summary: Elimina um médico pelo ID
       tags: [Doctors]
+      security:
+        - bearerAuth: [] # Requer autenticação  
       parameters:
         - in: path
           name: id
@@ -124,7 +132,6 @@ paths:
         deve ser implementada no backend.
       tags:
         - Doctors
-        - Appointments
 
       security:
         - bearerAuth: [] # Indica que este endpoint requer autenticação (token Bearer)

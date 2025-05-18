@@ -8,6 +8,8 @@ paths:
       summary: Retorna uma lista de consultas
       tags:
         - Appointments
+      security:
+        - bearerAuth: [] # Requer autenticação  
       responses:
         200:
           description: Lista de consultas
@@ -45,6 +47,8 @@ paths:
       summary: Cria uma nova consulta
       tags:
         - Appointments
+      security:
+        - bearerAuth: [] # Requer autenticação
       requestBody:
         required: true
         content:
@@ -104,6 +108,8 @@ paths:
       summary: Retorna uma consulta pelo ID
       tags:
         - Appointments
+      security:
+        - bearerAuth: [] # Requer autenticação
       parameters:
         - in: path
           name: id
@@ -139,6 +145,8 @@ paths:
       summary: Atualiza os dados de uma consulta
       tags:
         - Appointments
+      security:
+        - bearerAuth: [] # Requer autenticação
       parameters:
         - in: path
           name: id
@@ -187,6 +195,8 @@ paths:
       summary: Elimina uma consulta pelo ID
       tags:
         - Appointments
+      security:
+        - bearerAuth: [] # Requer autenticação
       parameters:
         - in: path
           name: id

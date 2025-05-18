@@ -17,6 +17,11 @@
         "tags": [
           "Users"
         ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "responses": {
           "200": {
             "description": "Lista de pacientes",
@@ -51,6 +56,11 @@
         "tags": [
           "Users"
         ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -82,6 +92,11 @@
         "summary": "Retorna um paciente pelo ID",
         "tags": [
           "Users"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
         ],
         "parameters": [
           {
@@ -122,6 +137,11 @@
         "summary": "Atualiza os dados de um paciente",
         "tags": [
           "Users"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
         ],
         "parameters": [
           {
@@ -166,6 +186,11 @@
         "summary": "Elimina um paciente pelo ID",
         "tags": [
           "Users"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
         ],
         "parameters": [
           {
@@ -333,6 +358,11 @@
         "tags": [
           "Doctors"
         ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -373,6 +403,11 @@
         "tags": [
           "Doctors"
         ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -411,6 +446,11 @@
         "summary": "Atualiza os dados de um médico",
         "tags": [
           "Doctors"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
         ],
         "parameters": [
           {
@@ -457,6 +497,11 @@
         "tags": [
           "Doctors"
         ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -472,7 +517,7 @@
             "description": "Médico removido com sucesso"
           },
           "404": {
-            "description": "Médico não encontrado"
+            "description": "Médico não encontradp"
           }
         }
       }
@@ -482,8 +527,7 @@
         "summary": "Retorna todas as consultas e pacientes de um médico específico",
         "description": "Lista todas as consultas agendadas com um médico cujo ID é especificado no caminho,\nincluindo os detalhes dos pacientes associados a cada consulta,\nbem como os detalhes do médico e a sua especialidade.\nEsta rota requer autenticação. A lógica de autorização (ex: apenas admin ou o próprio médico)\ndeve ser implementada no backend.\n",
         "tags": [
-          "Doctors",
-          "Appointments"
+          "Doctors"
         ],
         "security": [
           {
@@ -604,6 +648,11 @@
         "tags": [
           "Appointments"
         ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "responses": {
           "200": {
             "description": "Lista de consultas",
@@ -656,6 +705,11 @@
         "summary": "Cria uma nova consulta",
         "tags": [
           "Appointments"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
         ],
         "requestBody": {
           "required": true,
@@ -742,6 +796,11 @@
         "tags": [
           "Appointments"
         ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -794,6 +853,11 @@
         "summary": "Atualiza os dados de uma consulta",
         "tags": [
           "Appointments"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
         ],
         "parameters": [
           {
@@ -864,6 +928,11 @@
         "tags": [
           "Appointments"
         ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -894,11 +963,6 @@
         "description": "Acessível a qualquer utilizador autenticado.",
         "tags": [
           "Specialties"
-        ],
-        "security": [
-          {
-            "bearerAuth": []
-          }
         ],
         "responses": {
           "200": {

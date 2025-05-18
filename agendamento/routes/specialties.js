@@ -3,9 +3,6 @@ const router = express.Router();
 const auth = require('../middleware/auth'); // Middleware de autenticação
 const { Specialty, Doctor } = require('../models'); // Importa os modelos Specialty e Doctor
 
-// Middleware de autenticação aplicado a todas as rotas neste ficheiro
-router.use(auth);
-
 // Middleware específico para verificar se é admin para operações de escrita
 const adminOnly = (req, res, next) => {
   if (!req.user || req.user.role !== 'admin') {
@@ -28,6 +25,10 @@ router.get('/', async (req, res) => {
     res.status(500).json({ error: 'Erro interno do servidor ao buscar especialidades.' });
   }
 });
+
+// Middleware de autenticação aplicado a todas as rotas neste ficheiro
+router.use(auth);
+
 
 // POST /specialties - Adiciona uma nova especialidade (Requer admin)
 router.post('/', adminOnly, async (req, res) => {

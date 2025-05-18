@@ -59,10 +59,9 @@ Este projeto tem como objetivo desenvolver uma plataforma web para marcação de
 O sistema é baseado numa arquitetura RESTful, com uma base de dados relacional (MySQL) e protegido contra acessos não autorizados.  
 O projeto foi desenvolvido no âmbito da disciplina de Desenvolvimento Web II, por alunos do Grupo 32.
 
-### Resources
+### Recursos
 ## Capítulo 2: Recursos
-
-# 📌 Recursos REST implementados
+* 📌 Recursos REST implementados
 
 A API disponibiliza os seguintes recursos principais:
 

@@ -49,10 +49,6 @@ A [table](https://www.markdownguide.org/extended-syntax/#tables) may be usefull 
 * Express.js
 * Sequelize
 
-  
-## Report
-_Please add at least on section (a file) per Chapter. But you can add more._
-
 ### Apresentação do Projeto
 ## Capítulo 1:
 Este projeto tem como objetivo desenvolver uma plataforma web para marcação de consultas médicas. A aplicação permite que os utilizadores possam criar e gerir os seus próprios agendamentos, com autenticação segura via OAuth 2.0.  

@@ -45,66 +45,19 @@ A [table](https://www.markdownguide.org/extended-syntax/#tables) may be usefull 
 - [Sequelize](https://sequelize.org/)
 - [Passport](https://www.passportjs.org/concepts/authentication/strategies/)
 
+## Relatório
 
 ### Apresentação do Projeto
-## Capítulo 1: [Apresentação o Projeto](docs/c1.md)
+* Capítulo 1: [Apresentação o Projeto](docs/c1.md)
 
 ### Recursos
-## Capítulo 2:
-* 📌 Recursos REST implementados
-
-A API disponibiliza os seguintes recursos principais:
-
-1. **Users** (`/users`)  
-   Permite criar e consultar utilizadores registados.
-
-2. **Doctors** (`/doctors`)  
-   Permite listar médicos disponíveis e as suas especialidades.
-
-3. **Appointments** (`/appointments`)  
-   Permite criar, listar, atualizar e apagar marcações de consultas.
-
-4. **Specialties** (`/specialties`)  
-   Permite listar as especialidades médicas.
----
-## 🔗 Relações entre Recursos
-
-- Um **utilizador** pode ter várias **marcações de consultas** → relação **1:N**
-- Um **médico** pertence a uma **especialidade**
-- Um **médico** pode ter várias marcações (e cada marcação tem 1 médico)
+* Capítulo 2: [Recursos](docs/c2.md)
 
 ### Produto
-## Capítulo 3:
-* 🛠 Arquitetura da Aplicação
+* Capítulo 3: [Produto](docs/c3.md)
 
-A aplicação segue uma arquitetura RESTful organizada em camadas. A estrutura principal é:
-
-- **Node.js + Express** como servidor
-- **MySQL** como base de dados relacional
-- **Sequelize** como ORM
-- **Docker** para orquestração com `docker-compose`
-- **OAuth 2.0 + JWT** para autenticação e autorização
-
----
-
-* ⚙️ Funcionalidades
-
-- Criar, listar, atualizar e apagar marcações de consultas (Appointments)
-- Consultar especialidades médicas
-- Consultar e gerir médicos
-- Gestão de utilizadores autenticados
-
----
-
-* 🔐 Autenticação
-
-- Login via Google (OAuth 2.0)
-- Geração de token JWT
-- Proteção dos endpoints com middleware de verificação
-- O utilizador autenticado só consegue aceder às suas próprias marcações
-
-### Presentation
-* Chapter 4: [Presentation](doc/c4.md)
+### Apresentação
+* Capitulo 4: [Apresentação](docs/c4.md)
 ---
 ## Link's dos repositórios do Docker Hub
 

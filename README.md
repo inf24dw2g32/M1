@@ -30,24 +30,21 @@ Na pasta `/postmanCollection` encontra-se a **coleção `.json`** com todos os e
 _Please provide a galery of the final result, with small images_
 A [table](https://www.markdownguide.org/extended-syntax/#tables) may be usefull to organize the images.
 
-## Technologies
+## Tecnologias
 
 - [Node.js](https://nodejs.org/)
-- [Express.js](https://expressjs.com/)
 - [MySQL](https://www.mysql.com/)
-- [Sequelize](https://sequelize.org/)
 - [OAuth 2.0](https://oauth.net/2/)
 - [Docker & Docker Compose](https://www.docker.com/)
 - [Postman](https://www.postman.com/)
 - [OpenAPI 3.0](https://swagger.io/specification/)
 
-### Frameworks and Libraries
+### Frameworks e Bibliotecas
 
-* Docker
-* NodeJS
-* ReactJS
-* Express.js
-* Sequelize
+- [Express.js](https://expressjs.com/)
+- [Sequelize](https://sequelize.org/)
+- [Passport](https://www.passportjs.org/concepts/authentication/strategies/)
+
 
 ### Apresentação do Projeto
 ## Capítulo 1:

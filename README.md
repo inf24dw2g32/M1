@@ -67,9 +67,13 @@ Na pasta `/postmanCollection` encontra-se a **coleção `.json`** com todos os e
 ---
 ## Link's dos repositórios do Docker Hub
 
-- **mysql** - docker pull inf24dw1g32/xxx
-- **nodejs** - docker pull inf24dw1g32/xxx
+### DEV
+- **nodejs** - docker pull inf24dw1g32/node:dw2.m1
+- **mysql** - docker pull inf24dw1g32/mysql:dw2.m1
 
+### PROD
+- **nodejs** - docker pull inf24dw1g32/node:dw2.m1prod
+- **mysql** -docker pull inf24dw1g32/mysql:dw2.m1prod
 
 
 ## Elementos do Grupo

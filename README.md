@@ -26,10 +26,12 @@ O repositório está organizado da seguinte forma:
 
 Na pasta `/postmanCollection` encontra-se a **coleção `.json`** com todos os endpoints da API prontos a serem testados via Postman.
 
-## Gallery
+## Galeria
 
-_Please provide a galery of the final result, with small images_
-A [table](https://www.markdownguide.org/extended-syntax/#tables) may be usefull to organize the images.
+| Login / Logout | Imagem |
+| --- | ----------- |
+| Login | (galeria/users.png |
+| Paragraph | Text |
 
 ## Tecnologias
 

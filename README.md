@@ -31,7 +31,10 @@ Na pasta `/postmanCollection` encontra-se a **coleção `.json`** com todos os e
 | Login / Logout | Imagem |
 | --- | ----------- |
 | Login |  ![Login](/galeria/login.png) |
-| Paragraph | Text |
+| Users |  ![Users](/galeria/users.png) |
+| Doctors |  ![Doctors](/galeria/doctors.png) |
+| Appointments |  ![Appointments](/galeria/Appointments.png) |
+| Specialties |  ![Specialties](/galeria/Specialties.png) |
 
 ## Tecnologias
 

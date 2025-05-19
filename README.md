@@ -30,7 +30,7 @@ Na pasta `/postmanCollection` encontra-se a **coleção `.json`** com todos os e
 
 | Login / Logout | Imagem |
 | --- | ----------- |
-| Login | (galeria/users.png |
+| Login | (/galeria/users.png) |
 | Paragraph | Text |
 
 ## Tecnologias

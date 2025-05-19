@@ -221,15 +221,7 @@ router.get('/:userId/doctors', async (req, res) => {
                     as: 'medico', 
                     attributes: ['id', 'name'], 
                     required: true, 
-                    include: [
-                        {
-                            model: Specialty, // Incluímos a Especialidade através do Médico
-                            as: 'specialty', // <<-- Usa o alias definido em Doctor.belongsTo(Specialty, { as: 'specialty', ... })
-                            where: { id: specialtyId }, // <<< ESTA CLÁUSULA WHERE FILTRA AS CONSULTAS PELA ESPECIALIDADE DO MÉDICO >>>
-                            attributes: ['id', 'name'], // Campos da Especialidade a incluir
-                            required: true // Garante que só trazemos Médicos que pertencem a ESTA Especialidade
-                        }
-                    ]
+                    
                 }
             ],
         });

@@ -3,16 +3,6 @@ const router = express.Router();
 const auth = require('../middleware/auth'); // Assumindo que este middleware verifica autenticação e adiciona req.user
 const { Appointment, User, Doctor, Specialty } = require('../models'); // Importa os modelos Doctor e Specialty
 
-// Middleware de verificação de autenticação e admin (aplicado a todas as rotas abaixo)
-router.use(auth, (req, res, next) => {
-  // Verifica se o utilizador está autenticado (middleware 'auth' deve adicionar req.user)
-  // e se tem a role 'admin'
-  if (!req.user || req.user.role !== 'admin') {
-    return res.status(403).json({ error: 'Acesso negado. Apenas administradores podem gerir médicos.' });
-  }
-  next(); // Se for admin autenticado, continua para a próxima middleware/rota
-});
-
 // GET /doctors - Lista todos os médicos, incluindo a especialidade
 // Esta rota já existia, removemos apenas o 'auth' inline pois é gerido pelo router.use
 router.get('/', async (req, res) => {
@@ -33,6 +23,18 @@ include: [{
     res.status(500).json({ error: 'Erro interno do servidor ao buscar médicos.' });
   }
 });
+
+// Middleware de verificação de autenticação e admin (aplicado a todas as rotas abaixo)
+router.use(auth, (req, res, next) => {
+  // Verifica se o utilizador está autenticado (middleware 'auth' deve adicionar req.user)
+  // e se tem a role 'admin'
+  if (!req.user || req.user.role !== 'admin') {
+    return res.status(403).json({ error: 'Acesso negado. Apenas administradores podem gerir médicos.' });
+  }
+  next(); // Se for admin autenticado, continua para a próxima middleware/rota
+});
+
+
 
 // POST /doctors - Adiciona um novo médico (Requer admin)
 // Esta rota já existia, removemos a verificação de admin inline pois é gerida pelo router.use
@@ -78,8 +80,12 @@ router.get('/:id', async (req, res) => {
   try {
     // Busca o médico pelo ID e inclui a especialidade
     const doctor = await Doctor.findByPk(doctorId, {
-      include: Specialty
-      // Pode adicionar 'attributes' aqui se quiser limitar os campos retornados
+      include: {
+        model: Specialty,
+        as: 'specialty', // <<-- Usa o alias definido na associação Doctor.belongsTo(Specialty, { as: 'specialty', ... })
+        attributes: ['id', 'name'] // Inclui os campos da especialidade
+      }
+      
     });
 
     // Se o médico não for encontrado

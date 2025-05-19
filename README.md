@@ -26,10 +26,15 @@ O repositório está organizado da seguinte forma:
 
 Na pasta `/postmanCollection` encontra-se a **coleção `.json`** com todos os endpoints da API prontos a serem testados via Postman.
 
-## Gallery
+## Galeria
 
-_Please provide a galery of the final result, with small images_
-A [table](https://www.markdownguide.org/extended-syntax/#tables) may be usefull to organize the images.
+| Funcionalidade | Imagem |
+| --- | ----------- |
+| Login |  ![Login](/galeria/login.png) |
+| Users |  ![Users](/galeria/users.png) |
+| Doctors |  ![Doctors](/galeria/doctors.png) |
+| Appointments |  ![Appointments](/galeria/appointments.png) |
+| Specialties |  ![Specialties](/galeria/specialties.png) |
 
 ## Tecnologias
 
@@ -58,7 +63,7 @@ A [table](https://www.markdownguide.org/extended-syntax/#tables) may be usefull 
 * Capítulo 3: [Produto](docs/c3.md)
 
 ### Apresentação
-* Capitulo 4: [Apresentação](docs/c4.md)
+* Capitulo 4: [Apresentação do trabalho](docs/c4.md)
 ---
 ## Link's dos repositórios do Docker Hub
 

@@ -41,7 +41,8 @@ INSERT INTO users (name, email, google_id, role) VALUES
 ('Mariana Lima', 'mariana.lima@email.com', 'google_id_38', 'user'),
 ('Tiago Almeida', 'tiago.almeida@email.com', 'google_id_39', 'user'),
 ('Marcos Ferreira', 'marcos.ferreira@email.com', 'google_id_40', 'user'),
-('Ana Costa', 'ana.costa@email.com', 'google_id_41', 'user');
+('Ana Costa', 'ana.costa@email.com', 'google_id_41', 'user'),
+('João Gomes', 'joaogomesm1dw2@gmail.com', 'google_id_42', 'admin');
 
 -- Inserir especialidades na tabela specialties
 INSERT INTO specialties (name) VALUES

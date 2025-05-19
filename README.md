@@ -58,7 +58,7 @@ A [table](https://www.markdownguide.org/extended-syntax/#tables) may be usefull 
 * Capítulo 3: [Produto](docs/c3.md)
 
 ### Apresentação
-* Capitulo 4: [Apresentação](docs/c4.md)
+* Capitulo 4: [Apresentação do trabalho](docs/c4.md)
 ---
 ## Link's dos repositórios do Docker Hub
 

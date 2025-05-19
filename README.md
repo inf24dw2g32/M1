@@ -28,7 +28,7 @@ Na pasta `/postmanCollection` encontra-se a **coleção `.json`** com todos os e
 
 ## Galeria
 
-| Login / Logout | Imagem |
+| Funcionalidade | Imagem |
 | --- | ----------- |
 | Login |  ![Login](/galeria/login.png) |
 | Users |  ![Users](/galeria/users.png) |

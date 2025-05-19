@@ -16,8 +16,9 @@ Este projeto consiste no desenvolvimento de uma API REST para uma plataforma de 
 ## Organização do repositório
 
 O repositório está organizado da seguinte forma:
-- **pasta Docs** - xxx
-- **pasta Agenda** - Contém ficheiros xxxx, Base Dados, respectivos dockerfile, docker-compose
+- **pasta Docs** - Capitulos com descrição do trabalho
+- **pasta Galeria** - Contém imagens utilizados nos ficheiros Markedown
+- **pasta Agenda** - Contém ficheiros Yaml, Ficheiros js das Routes, ficheiros js dos Models, Configuração do Middleware , Base Dados, respectivos dockerfile, docker-compose
 - **pasta PostmanCollection**: Arquivo com a Collection do Postman para testar os endpoints da API.
 
 

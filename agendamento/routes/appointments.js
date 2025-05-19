@@ -49,7 +49,7 @@ const authorizeAppointmentAccess = (req, appointment) => {
     if (!appointment) return false;
 
     // Se o utilizador autenticado não existe ou não tem o campo 'role', nega o acesso (deveria ser tratado pelo middleware 'auth')
-     if (!req.user || !req.user.role) return false;
+    if (!req.user || !req.user.role) return false;
 
     // Se o utilizador é admin, permite o acesso
     if (req.user.role === 'admin') {
@@ -97,9 +97,9 @@ router.get('/', async (req, res) => {
                 // Opcional: Incluir o Utilizador (Paciente) - útil para admins ou para resposta detalhada.
                 // Se não for necessário na resposta ou lógica, pode remover este include para performance.
                 {
-                     model: User,
-                     as: 'paciente', // Alias assumido para Appointment.belongsTo(User)
-                     attributes: ['id', 'name'] // Atributos do Utilizador (Paciente)
+                    model: User,
+                    as: 'paciente', // Alias assumido para Appointment.belongsTo(User)
+                    attributes: ['id', 'name'] // Atributos do Utilizador (Paciente)
                 }
             ],
             order: [['date', 'ASC'], ['time', 'ASC']] // Opcional: Ordenar resultados
@@ -118,69 +118,56 @@ router.get('/', async (req, res) => {
 
 // POST /appointments - Cria uma nova consulta
 // Corresponde ao esquema POST /appointments no OpenAPI
-router.post('/', async (req, res) => {
-    // req.user é preenchido pelo middleware 'auth'
+router.post('/', auth, async (req, res) => { // Aplica 'auth' diretamente à rota
+
     const pacienteId = req.user.id; // ID do utilizador autenticado obtido do req.user
-    // Desestrutura para pegar os campos esperados do body da requisição (conforme OpenAPI requestBody properties)
-    // Assume que 'pacienteId' e 'descricao' no body são opcionais/ignorados se o user vier do auth
     const { data, medicoId, especialidadeId, descricao /*, pacienteId - ignorado se vier no body */ } = req.body;
 
-    // Validação básica dos campos obrigatórios (conforme OpenAPI requestBody required)
-    // Note que pacienteId não é validado aqui, pois vem do utilizador autenticado.
     if (!data || !medicoId || !especialidadeId) {
         return res.status(400).json({ error: 'Campos obrigatórios faltando: data, medicoId, especialidadeId.' });
     }
 
     try {
-        // Passo 1: Validar se o medicoId existe E se pertence à especialidadeId fornecida
         const doctor = await Doctor.findByPk(medicoId, {
-             include: [{
+            include: [{
                 model: Specialty,
                 as: 'specialty', // Alias assumido para Doctor.belongsTo(Specialty)
                 attributes: ['id'] // Apenas precisamos do ID para validar
-             }]
+            }],
+
+            rejectOnEmpty: true
         });
 
-        // Verifica se o médico foi encontrado E se a especialidade associada corresponde ao especialidadeId fornecido
-        if (!doctor || !doctor.specialty || doctor.specialty.id !== especialidadeId) {
-           return res.status(400).json({ error: 'Médico não encontrado ou não associado à especialidade fornecida.' });
+        if (!doctor.specialty || doctor.specialty.id !== especialidadeId) {
+            return res.status(400).json({ error: 'Médico não encontrado ou não associado à especialidade fornecida.' });
         }
 
-        // Passo 2: Preparar data e hora para inserção na BD
-        // 'data' é uma string date-time (ISO 8601), precisamos separá-la em date e time
         const appointmentDateTime = new Date(data);
 
-        // Verifica se a data é válida
+
         if (isNaN(appointmentDateTime.getTime())) {
-             return res.status(400).json({ error: 'Formato de data e hora inválido.' });
+            return res.status(400).json({ error: 'Formato de data e hora inválido.' });
         }
 
-        const dbDate = appointmentDateTime.toISOString().split('T')[0]; // FormatoYYYY-MM-DD
-        // Extrai a parte da hora e formata. O formato exato depende do tipo TIME da sua BD.
-        // Sequelize DataTypes.TIME geralmente armazena 'HH:MM:SS' ou 'HH:MM:SS.sss'.
-        // JavaScript Date.toTimeString() retorna algo como "HH:MM:SS GMT+..."
-        // Precisamos apenas da parte HH:MM:SS.
+        const dbDate = appointmentDateTime.toISOString().split('T')[0]; // Formato YYYY-MM-DD
         const dbTime = appointmentDateTime.toTimeString().split(' ')[0]; // Ex: "10:30:00"
 
 
-        // Passo 3: Criar a consulta no banco de dados
+
         const appointment = await Appointment.create({
             date: dbDate, // Mapeia 'data' (parte da data) para 'date' na BD
             time: dbTime, // Mapeia 'data' (parte da hora formatada) para 'time' na BD
             notes: descricao, // Mapeia 'descricao' para 'notes' na BD
             user_id: pacienteId, // Mapeia 'pacienteId' (do auth) para 'user_id' na BD
             doctor_id: medicoId // Mapeia 'medicoId' para 'doctor_id' na BD
-            // especialidadeId não é armazenado na tabela appointments, usado apenas para validação
+
         });
 
-        // Passo 4: Buscar a consulta criada com os dados incluídos para retornar na resposta 201
-        // O esquema OpenAPI 201 que forneceu inclui id, data, descricao, pacienteId, medicoId, especialidadeId.
-        // Vamos buscar e retornar os detalhes completos incluindo associações para ser mais útil.
         const createdAppointmentDetails = await Appointment.findByPk(appointment.id, {
-             // Seleciona os campos base da consulta criada
-             attributes: ['id', 'date', 'time', 'notes', 'user_id', 'doctor_id'],
-             include: [
-                // Inclui o Médico e a Especialidade associada
+
+            attributes: ['id', 'date', 'time', 'notes', 'user_id', 'doctor_id'],
+            include: [
+
                 {
                     model: Doctor,
                     as: 'medico', // Alias assumido
@@ -191,43 +178,30 @@ router.post('/', async (req, res) => {
                         attributes: ['id', 'name']
                     }]
                 },
-                // Incluir o Utilizador (Paciente)
-                 {
-                     model: User,
-                     as: 'paciente', // Alias assumido
-                     attributes: ['id', 'name'] // Campos do Paciente
-                 }
-             ]
+
+                {
+                    model: User,
+                    as: 'paciente', // Alias assumido
+                    attributes: ['id', 'name'] // Campos do Paciente
+                }
+            ]
         });
 
-        // Formata a resposta para o esquema OpenAPI 201.
-        // O esquema 201 que forneceu é mais detalhado que o formato dos GETs.
-        const detailedResponse = {
-            id: createdAppointmentDetails.id,
-            // Combina date e time da BD para 'data' (ISO 8601)
-            data: `${createdAppointmentDetails.date}T${createdAppointmentDetails.time ? createdAppointmentDetails.time.toISOString().split('T')[1] : '00:00:00.000Z'}`,
-            descricao: createdAppointmentDetails.notes, // Mapeia notes para descricao
-            pacienteId: createdAppointmentDetails.user_id, // Incluir IDs brutos conforme o seu schema 201
-            medicoId: createdAppointmentDetails.doctor_id, // Incluir IDs brutos
-            especialidadeId: especialidadeId, // Incluir o especialidadeId que veio no request body (não armazenado na BD)
+        res.status(201).json(createdAppointmentDetails);
 
-            // Opcional: Incluir objetos aninhados se o schema 201 os tiver
-            // paciente: createdAppointmentDetails.paciente ? { id: createdAppointmentDetails.paciente.id, name: createdAppointmentDetails.paciente.name } : null,
-            // medico: createdAppointmentDetails.medico ? { id: createdAppointmentDetails.medico.id, name: createdAppointmentDetails.medico.name } : null,
-            // specialty: createdAppointmentDetails.medico && createdAppointmentDetails.medico.specialty ? { id: createdAppointmentDetails.medico.specialty.id, name: createdAppointmentDetails.medico.specialty.name } : null,
-        };
-
-
-        res.status(201).json(detailedResponse); // Retorna o objeto detalhado conforme o schema 201 desejado
 
     } catch (error) {
         console.error('Erro ao criar consulta:', error);
-        // Tratamento de erro mais específico, ex: SequelizeForeignKeyConstraintError para doctor_id ou user_id inválido
+
         if (error.name === 'SequelizeForeignKeyConstraintError') {
-             // Verifica qual FK falhou se possível, ou dá um erro genérico de FK
-             return res.status(400).json({ error: 'ID de médico ou paciente inválido.' });
+
+            return res.status(400).json({ error: 'ID de médico ou paciente inválido.' });
         }
-        // Outros erros...
+        // Adicionado tratamento para o caso de o médico não ser encontrado na validação inicial
+        if (error.name === 'SequelizeEmptyResultError') {
+            return res.status(400).json({ error: 'Médico não encontrado com o ID fornecido.' });
+        }
+
         res.status(500).json({ error: 'Erro interno do servidor ao criar consulta.' });
     }
 });
@@ -243,9 +217,9 @@ router.get('/:id', async (req, res) => {
     try {
         // Busca a consulta pelo ID e inclui Doutor e Especialidade
         const appointment = await Appointment.findByPk(appointmentId, {
-             // Seleciona os campos base necessários
-             attributes: ['id', 'date', 'time', 'notes', 'user_id', 'doctor_id'], // Incluir FKs para autorização
-             include: [
+            // Seleciona os campos base necessários
+            attributes: ['id', 'date', 'time', 'notes', 'user_id', 'doctor_id'], // Incluir FKs para autorização
+            include: [
                 {
                     model: Doctor,
                     as: 'medico', // Alias assumido
@@ -258,11 +232,11 @@ router.get('/:id', async (req, res) => {
                 },
                 // Incluir Utilizador para verificação de autorização e potencialmente para a resposta
                 {
-                     model: User,
-                     as: 'paciente', // Alias assumido
-                     attributes: ['id', 'name'] // Atributos do Utilizador
+                    model: User,
+                    as: 'paciente', // Alias assumido
+                    attributes: ['id', 'name'] // Atributos do Utilizador
                 }
-             ]
+            ]
         });
 
         // Se a consulta não for encontrada
@@ -272,7 +246,7 @@ router.get('/:id', async (req, res) => {
 
         // Verificação de autorização: o utilizador autenticado é o dono OU é admin
         if (!authorizeAppointmentAccess(req, appointment)) {
-             return res.status(403).json({ error: 'Acesso negado. Não tem permissão para visualizar esta consulta.' });
+            return res.status(403).json({ error: 'Acesso negado. Não tem permissão para visualizar esta consulta.' });
         }
 
         // Formata a resposta para o formato da API desejado (id, data, descricao, specialty)
@@ -327,9 +301,9 @@ router.put('/:id', async (req, res) => {
         // Se data for fornecida, processa e adiciona date e time aos updateFields
         if (data !== undefined) {
             const appointmentDateTime = new Date(data);
-             if (isNaN(appointmentDateTime.getTime())) {
-                 return res.status(400).json({ error: 'Formato de data e hora inválido.' });
-             }
+            if (isNaN(appointmentDateTime.getTime())) {
+                return res.status(400).json({ error: 'Formato de data e hora inválido.' });
+            }
             updateFields.date = appointmentDateTime.toISOString().split('T')[0]; // Mapeia 'data' (parte da data) para 'date' na BD
             // Extrai a parte da hora e formata. Ajuste conforme o formato TIME da sua BD.
             updateFields.time = appointmentDateTime.toTimeString().split(' ')[0]; // Ex: "10:30:00" (pode precisar de mais formatação)
@@ -352,14 +326,14 @@ router.put('/:id', async (req, res) => {
             });
 
             if (!doctor) {
-                 return res.status(400).json({ error: 'ID do médico inválido.' });
+                return res.status(400).json({ error: 'ID do médico inválido.' });
             }
 
             // Se especialidadeId também for fornecida na atualização, valida o medicoId contra ela
             if (especialidadeId !== undefined) {
-                 if (!doctor.specialty || doctor.specialty.id !== especialidadeId) {
+                if (!doctor.specialty || doctor.specialty.id !== especialidadeId) {
                     return res.status(400).json({ error: 'Novo médico não associado à especialidade fornecida.' });
-                 }
+                }
             }
 
             updateFields.doctor_id = medicoId; // Mapeia 'medicoId' para 'doctor_id' na BD
@@ -369,7 +343,7 @@ router.put('/:id', async (req, res) => {
 
         // Se não houver campos válidos para atualizar no body, retorna 400
         if (Object.keys(updateFields).length === 0) {
-             return res.status(400).json({ error: 'Nenhum campo de atualização válido fornecido (data, descricao, medicoId).' });
+            return res.status(400).json({ error: 'Nenhum campo de atualização válido fornecido (data, descricao, medicoId).' });
         }
 
         // Atualiza os dados da consulta na base de dados
@@ -380,7 +354,7 @@ router.put('/:id', async (req, res) => {
         const updatedAppointmentDetails = await Appointment.findByPk(appointment.id, {
             // Incluir campos base
             attributes: ['id', 'date', 'time', 'notes', 'user_id', 'doctor_id'],
-             include: [
+            include: [
                 // Inclui o Médico e Especialidade (e Paciente se necessário)
                 {
                     model: Doctor,
@@ -392,29 +366,29 @@ router.put('/:id', async (req, res) => {
                         attributes: ['id', 'name']
                     }]
                 },
-                 {
-                     model: User,
-                     as: 'paciente', // Alias assumido
-                     attributes: ['id', 'name']
-                 }
-             ]
+                {
+                    model: User,
+                    as: 'paciente', // Alias assumido
+                    attributes: ['id', 'name']
+                }
+            ]
         });
 
         // Formata a resposta
-         // Se o esquema 200 do PUT no OpenAPI for mais detalhado que o GET, ajuste a formatação aqui.
-         // Vamos retornar o objeto formatado similar ao GET list/ID por padrão.
-         const formattedResponse = formatAppointmentResponse(updatedAppointmentDetails);
+        // Se o esquema 200 do PUT no OpenAPI for mais detalhado que o GET, ajuste a formatação aqui.
+        // Vamos retornar o objeto formatado similar ao GET list/ID por padrão.
+        const formattedResponse = formatAppointmentResponse(updatedAppointmentDetails);
 
-         // Se o esquema 200 do PUT for mais detalhado (incluir paciente, medico, etc.), formate aqui.
+        // Se o esquema 200 do PUT for mais detalhado (incluir paciente, medico, etc.), formate aqui.
 
         res.json(formattedResponse); // Retorna o objeto atualizado formatado
 
     } catch (error) {
         console.error(`Erro ao editar consulta com ID ${appointmentId}:`, error);
         // Tratamento de erro mais específico, ex: SequelizeForeignKeyConstraintError
-         if (error.name === 'SequelizeForeignKeyConstraintError') {
-              return res.status(400).json({ error: 'ID de médico inválido na atualização.' });
-         }
+        if (error.name === 'SequelizeForeignKeyConstraintError') {
+            return res.status(400).json({ error: 'ID de médico inválido na atualização.' });
+        }
         res.status(500).json({ error: 'Erro interno do servidor ao editar consulta.' });
     }
 });

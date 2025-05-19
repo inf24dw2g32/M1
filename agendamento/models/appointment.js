@@ -33,14 +33,7 @@ module.exports = (sequelize) => {
  type: DataTypes.INTEGER,
  allowNull: false,
  },
-    // Note: A coluna specialty_id aqui é inesperada com base no schema original (era na tabela doctors).
-    // Se ela existe na BD e é necessária, mantenha. Se não, remova.
-    // Para as relações discutidas (Appointments -> Doctors -> Specialties), specialty_id na tabela appointments
-    // não é estritamente necessário para os includes que está a fazer.
- specialty_id: { // <-- Verifique se esta coluna realmente existe na sua tabela 'appointments'
- type: DataTypes.INTEGER,
- allowNull: false, // Verifique a permissão de NULL na DB
- },
+ 
 }, {
  sequelize,
  modelName: 'Appointment',

@@ -36,21 +36,89 @@ paths:
       security:
         - bearerAuth: [] # Requer autenticação
 
-      requestBody:
-        required: true
+      requestBody: # Define o corpo do pedido esperado
+        required: true # Indica que o corpo do pedido é obrigatório
         content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                nome:
+          application/json: # O tipo de conteúdo esperado é JSON
+            schema: # Define a estrutura do objeto JSON esperado
+              type: object # O corpo do pedido é um objeto JSON
+              properties: # Define as propriedades (campos) do objeto
+                name:
                   type: string
-                  description: O nome do paciente
+                  description: O nome completo do utilizador.
+                  example: "João Silva" # Exemplo de valor para documentação
+                email:
+                  type: string
+                  format: email # Indica que deve ser um formato de email
+                  description: O endereço de email único do utilizador.
+                  example: "joao.silva@example.com"
+                google_id:
+                  type: string
+                  description: O identificador único do utilizador fornecido pelo Google (após autenticação OAuth2).
+                  example: "118005194401585621327" # Exemplo de um Google ID
+
+              required: # Lista os campos que são obrigatórios no corpo do pedido
+                - name
+                - email
+                - google_id
+
       responses:
         201:
-          description: Paciente criado com sucesso
+          description: Utilizador criado com sucesso
+          content:
+            application/json:
+              schema:
+                type: object # A resposta é um objeto JSON
+                properties:
+                  id:
+                    type: integer
+                    description: O ID único do utilizador criado.
+                  name:
+                    type: string
+                    description: O nome do utilizador.
+                  email:
+                    type: string
+                    format: email
+                    description: O email do utilizador.
+                  google_id:
+                    type: string
+                    description: O Google ID do utilizador.
+                  role:
+                    type: string
+                    description: O papel do utilizador no sistema (ex: 'user', 'admin').
+                    enum: ['user', 'admin'] # Define os valores possíveis
+                example: # Exemplo da resposta esperada
+                  id: 1
+                  name: "João Silva"
+                  email: "joao.silva@example.com"
+                  google_id: "118005194401585621327"
+                  role: "user"
+
         400:
-          description: Erro ao criar paciente
+          description: Pedido inválido (ex: campos obrigatórios faltando, email ou Google ID já existem)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Mensagem de erro detalhada.
+                example:
+                  error: "Campos obrigatórios faltando: name, email, google_id."
+
+        500:
+          description: Erro interno do servidor ao criar o utilizador.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Mensagem de erro detalhada.
+                example:
+                  error: "Erro interno do servidor ao criar utilizador."
 
   /users/{id}:
     get:

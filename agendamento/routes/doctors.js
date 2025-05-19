@@ -129,7 +129,13 @@ router.put('/:id', async (req, res) => {
     await doctor.update(updateFields);
 
     // Opcional: buscar o médico atualizado com a especialidade para retornar na resposta
-    const updatedDoctorWithSpecialty = await Doctor.findByPk(doctor.id, { include: Specialty });
+    const updatedDoctorWithSpecialty = await Doctor.findByPk(doctor.id, {
+       include: {
+        model: Specialty,
+        as: 'specialty', // <<-- Usa o alias definido na associação Doctor.belongsTo(Specialty, { as: 'specialty', ... })
+        attributes: ['id', 'name'] // Inclui os campos da especialidade
+      }
+    });
 
     // Retorna o médico atualizado com a especialidade
     res.json(updatedDoctorWithSpecialty);

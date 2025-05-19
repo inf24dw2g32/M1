@@ -18,7 +18,7 @@ paths:
                     name:
                       type: string
         500:
-          description: Erro ao buscar médicos
+          description: Erro ao procurar médicos
 
     post:
       summary: Cria um novo médico
@@ -119,7 +119,7 @@ paths:
         200:
           description: Médico removido com sucesso
         404:
-          description: Médico não encontradp
+          description: Médico não encontrado
 
   /doctors/{id}/appointments:
     get:
@@ -216,7 +216,7 @@ paths:
 
         403:
           description: Acesso negado. O utilizador autenticado não tem permissão para aceder a estas consultas (ex: não é admin, nem o médico em questão).
-          # Esta resposta 403 é relevante se a sua lógica de backend implementa restrições de acesso.
+  
 
         404:
           description: Médico não encontrado com o ID fornecido.

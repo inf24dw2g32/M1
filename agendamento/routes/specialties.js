@@ -57,8 +57,12 @@ router.get('/:id', async (req, res) => {
 
   try {
     const specialty = await Specialty.findByPk(specialtyId, {
-         // Opcional: pode incluir médicos associados se tiver a relação N:M configurada
-         include: [{ model: Doctor, as: 'doctors', attributes: ['id', 'name'], through: { attributes: [] } }]
+         include: [{
+               model: Doctor,
+               as: 'doctors', // Alias definido em Specialty.hasMany(Doctor, { as: 'doctors', ... })
+               attributes: ['id', 'name'] // Campos dos médicos a incluir
+
+           }]
     });
 
     if (!specialty) {
